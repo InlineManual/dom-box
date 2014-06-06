@@ -5,14 +5,11 @@
   "description": "Utility for working with dimensions and positions of DOM elements.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fczbkk/dom-box.git"
+    "url": "https://bitbucket.org/fczbkk/dombox.git"
   },
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com/)",
   "license": "UNLICENSE",
-  "bugs": {
-    "url": "https://github.com/fczbkk/dom-box/issues"
-  },
-  "homepage": "https://github.com/fczbkk/dom-box",
+  "homepage": "https://bitbucket.org/fczbkk/dombox",
   "devDependencies": {
     "grunt": "^0.4.4",
     "grunt-coffeelint": "^0.0.10",
@@ -20,7 +17,6 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-contrib-jasmine": "^0.6.4",
     "grunt-contrib-coffee": "^0.10.1",
-    
     "load-grunt-tasks": "^0.4.0"
   }
 }
