@@ -1,0 +1,21 @@
+{
+  "name": "dom-box",
+  "version": "0.1.0",
+  "authors": [
+    "Riki Fridrich <riki@fczbkk.com>"
+  ],
+  "description": "Utility for working with dimensions and positions of DOM elements.",
+  "main": "build/dom-box.js",
+  "license": "UNLICENSE",
+  "homepage": "https://bitbucket.org/fczbkk/dombox",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "src",
+    "Gruntfile.coffee",
+    "package.json"
+  ]
+}
