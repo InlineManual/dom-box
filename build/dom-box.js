@@ -1,11 +1,19 @@
 (function() {
-  var Box, DomBox, body, box_properties, getExtremes, html, isElement, root;
+  var Box, DomBox, body, box_properties, degToRad, getExtremes, html, isElement, radToDeg, root;
 
   body = document.body;
 
   html = document.documentElement;
 
   box_properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+
+  radToDeg = function(angle) {
+    return angle * (180 / Math.PI);
+  };
+
+  degToRad = function(angle) {
+    return angle * (Math.PI / 180);
+  };
 
   isElement = function(obj) {
     try {
@@ -254,7 +262,7 @@
       pivot1 = box1.getPivot();
       pivot2 = box2.getPivot();
       angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left);
-      angle_deg = angle_rad * 180 / Math.PI;
+      angle_deg = radToDeg(angle_rad);
       if (angle_deg < 0) {
         angle_deg += 360;
       }

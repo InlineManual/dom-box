@@ -8,6 +8,10 @@ box_properties = [
   'view_left', 'view_top', 'view_right', 'view_bottom'
 ]
 
+# conversion between radians and degrees
+radToDeg = (angle) -> angle * (180 / Math.PI)
+degToRad = (angle) -> angle * (Math.PI / 180)
+
 # Utility function that returns true if referenced object is DOM element.
 isElement = (obj) ->
   try
@@ -210,7 +214,7 @@ DomBox =
     pivot2 = box2.getPivot()
 
     angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left)
-    angle_deg = angle_rad * 180 / Math.PI
+    angle_deg = radToDeg angle_rad
     angle_deg += 360 if angle_deg < 0
     angle_deg
 
