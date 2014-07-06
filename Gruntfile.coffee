@@ -49,7 +49,11 @@ module.exports = (grunt) ->
         tasks: ['coffeelint:test', 'coffee:test', 'jasmine']
 
 
-
+    bump:
+      options:
+        files: ['package.json', 'bower.json']
+        updateConfigs: ['pkg']
+        push: false
 
 
   grunt.registerTask 'build', [
