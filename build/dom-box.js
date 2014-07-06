@@ -16,11 +16,7 @@
   };
 
   isElement = function(obj) {
-    try {
-      return obj instanceof HTMLElement;
-    } catch (_error) {
-      return typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
-    }
+    return typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
   };
 
   getExtremes = function(items) {

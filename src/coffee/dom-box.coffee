@@ -14,15 +14,12 @@ degToRad = (angle) -> angle * (Math.PI / 180)
 
 # Utility function that returns true if referenced object is DOM element.
 isElement = (obj) ->
-  try
-    # modern browsers
-    obj instanceof HTMLElement
-  catch
-    # ancient browsers
-    typeof obj is 'object' and
-    obj.nodeType is 1 and
-    typeof obj.style is 'object' and
-    typeof obj.ownerDocument is 'object'
+  # NOTE: Simply checking if obj is instance of HTMLElement would not work here,
+  # because that would exclude exotic elements like SVG polygons, etc.
+  typeof obj is 'object' and
+  obj.nodeType is 1 and
+  typeof obj.style is 'object' and
+  typeof obj.ownerDocument is 'object'
 
 # Returns object containing all box properties calculated so that they fit the
 # extreme values of bounding box. This means it takes lowest value for top/left,
