@@ -60,6 +60,7 @@ module.exports = (grunt) ->
           'package.json'
           'bower.json'
         ]
+        pushTo: '<%= pkg.repository.url %>'
 
   grunt.registerTask 'build', [
     'coffeelint'
