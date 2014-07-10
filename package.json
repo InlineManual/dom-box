@@ -1,7 +1,7 @@
 {
   "title": "DOM Box",
   "name": "dom-box",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Utility for working with dimensions and positions of DOM elements.",
   "repository": {
     "type": "git",
