@@ -57,6 +57,7 @@ module.exports = (grunt) ->
         ]
         updateConfigs: ['pkg']
         commitFiles: ['-a']
+        pushTo: '<%= pkg.repository.url %>'
 
 
   grunt.registerTask 'build', [
