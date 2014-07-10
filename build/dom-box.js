@@ -175,16 +175,10 @@
     };
 
     Box.prototype.isInViewport = function() {
-      var attribute, _i, _len, _ref;
+      var viewport;
       this.update();
-      _ref = ['view_left', 'view_top', 'view_right', 'view_bottom'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        attribute = _ref[_i];
-        if (this[attribute] < 0) {
-          return false;
-        }
-      }
-      return true;
+      viewport = DomBox.viewport.getBox();
+      return this.view_left > viewport.left && this.view_right < viewport.right && this.view_bottom < viewport.bottom && this.view_top > viewport.top;
     };
 
     Box.prototype.isPartialyInViewport = function() {

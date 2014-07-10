@@ -207,6 +207,18 @@ describe 'DomBox', ->
       window.scrollTo 300, 300
       expect(b.isInViewport()).toBe false
 
+    it 'should detect if element far to the right is in viewport', ->
+      window.scrollTo 0, 0
+      elm = createElement 100, 100, 999999, 0
+      b = new DomBox.Box elm
+      expect(b.isInViewport()).toEqual false
+
+    it 'should detect if element far to the bottom is in viewport', ->
+      window.scrollTo 0, 0
+      elm = createElement 100, 100, 0, 999999
+      b = new DomBox.Box elm
+      expect(b.isInViewport()).toEqual false
+
     it 'should detect if is partialy within viewport', ->
       window.scrollTo 0, 0
       expect(b.isPartialyInViewport()).toBe true

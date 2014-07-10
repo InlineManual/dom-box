@@ -136,9 +136,13 @@ class Box
   # returns true if box is completly visible within viewport
   isInViewport: ->
     @update()
-    for attribute in ['view_left', 'view_top', 'view_right', 'view_bottom']
-      return false if @[attribute] < 0
-    return true
+    viewport = DomBox.viewport.getBox()
+
+    # conditions
+    @view_left > viewport.left and
+    @view_right < viewport.right and
+    @view_bottom < viewport.bottom and
+    @view_top > viewport.top
 
   # returns true if box is at least partialy visible within viewport
   isPartialyInViewport: ->

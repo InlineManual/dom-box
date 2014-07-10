@@ -1,6 +1,6 @@
 module.exports = (grunt) ->
 
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt)
 
   grunt.initConfig
 
@@ -51,10 +51,12 @@ module.exports = (grunt) ->
 
     bump:
       options:
-        files: ['package.json', 'bower.json']
+        files: [
+          'package.json'
+          'bower.json'
+        ]
         updateConfigs: ['pkg']
-        commit: false
-        push: false
+        commitFiles: ['-a']
 
 
   grunt.registerTask 'build', [
