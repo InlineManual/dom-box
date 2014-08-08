@@ -153,6 +153,19 @@ describe 'DomBox', ->
       expect(b.view_right).toEqual 0
       expect(b.view_bottom).toEqual 0
 
+    it 'should be created with zero values if selector is empty string', ->
+      b = new DomBox.Box ''
+      expect(b.width).toEqual 0
+      expect(b.height).toEqual 0
+      expect(b.left).toEqual 0
+      expect(b.top).toEqual 0
+      expect(b.right).toEqual 0
+      expect(b.bottom).toEqual 0
+      expect(b.view_left).toEqual 0
+      expect(b.view_top).toEqual 0
+      expect(b.view_right).toEqual 0
+      expect(b.view_bottom).toEqual 0
+
     it 'should get get values for single element', ->
       b = new DomBox.Box '#elm1'
       expect(b.width).toEqual 100

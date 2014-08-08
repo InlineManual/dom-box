@@ -56,11 +56,8 @@ module.exports = (grunt) ->
           'bower.json'
         ]
         updateConfigs: ['pkg']
-        commitFiles: [
-          'package.json'
-          'bower.json'
-        ]
-        pushTo: '<%= pkg.repository.url %>'
+        commitFiles: ['-a']
+        push: false
 
   grunt.registerTask 'build', [
     'coffeelint'

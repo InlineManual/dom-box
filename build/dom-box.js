@@ -90,7 +90,7 @@
     Box.prototype.getData = function(box) {
       var collection, element, items;
       if (box != null) {
-        if (typeof box === 'string') {
+        if (typeof box === 'string' && box !== '') {
           collection = document.querySelectorAll(box);
           items = (function() {
             var _i, _len, _results;

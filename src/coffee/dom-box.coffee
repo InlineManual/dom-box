@@ -70,7 +70,7 @@ class Box
   getData: (box) ->
     if box?
 
-      if typeof box is 'string'
+      if typeof box is 'string' and box isnt ''
         collection = document.querySelectorAll box
         items = (@getElementData element for element in collection)
         items.push @default_values if items.length is 0
