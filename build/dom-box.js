@@ -1,11 +1,7 @@
 (function() {
-  var Box, DomBox, body, box_properties, degToRad, getExtremes, html, isElement, radToDeg, root;
-
-  body = document.body;
-
-  html = document.documentElement;
-
-  box_properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+  var DomBox, body, degToRad, getExtremes, html, isElement, normalizeAngle, radToDeg, root,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   radToDeg = function(angle) {
     return angle * (180 / Math.PI);
@@ -15,127 +11,207 @@
     return angle * (Math.PI / 180);
   };
 
-  isElement = function(obj) {
-    return typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
+  normalizeAngle = function(angle) {
+    angle = angle % 360;
+    if (angle < 0) {
+      angle += 360;
+    }
+    return angle;
   };
 
-  getExtremes = function(items) {
-    var data, item, key, result, val, _i, _j, _len, _len1;
-    if (items == null) {
-      items = [];
-    }
-    data = {};
-    for (_i = 0, _len = items.length; _i < _len; _i++) {
-      item = items[_i];
-      for (_j = 0, _len1 = box_properties.length; _j < _len1; _j++) {
-        key = box_properties[_j];
-        if (!data[key]) {
-          data[key] = [];
-        }
-        data[key].push(item[key]);
-      }
+  getExtremes = function(boxes) {
+    var box, data, key, property, result, val, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+    if (boxes == null) {
+      boxes = [];
     }
     result = {};
-    for (key in data) {
-      val = data[key];
-      switch (key) {
-        case 'left':
-        case 'top':
-        case 'view_left':
-        case 'view_top':
-          result[key] = Math.min.apply(null, data[key]);
-          break;
-        case 'right':
-        case 'bottom':
-        case 'view_right':
-        case 'view_bottom':
-          result[key] = Math.max.apply(null, data[key]);
+    data = {
+      width: [],
+      height: [],
+      left: [],
+      top: [],
+      right: [],
+      bottom: [],
+      view_left: [],
+      view_top: [],
+      view_right: [],
+      view_bottom: []
+    };
+    for (_i = 0, _len = boxes.length; _i < _len; _i++) {
+      box = boxes[_i];
+      for (key in data) {
+        val = data[key];
+        data[key].push(box[key]);
       }
+    }
+    _ref = ['left', 'top', 'view_left', 'view_top'];
+    for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+      property = _ref[_j];
+      result[property] = Math.min.apply(null, data[property]);
+    }
+    _ref1 = ['right', 'bottom', 'view_right', 'view_bottom'];
+    for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+      property = _ref1[_k];
+      result[property] = Math.max.apply(null, data[property]);
     }
     result.width = result.right - result.left;
     result.height = result.bottom - result.top;
     return result;
   };
 
-  Box = (function() {
-    Box.prototype.default_values = {
-      width: 0,
-      height: 0,
-      left: 0,
-      top: 0,
-      right: 0,
-      bottom: 0,
-      view_left: 0,
-      view_top: 0,
-      view_right: 0,
-      view_bottom: 0
-    };
+  isElement = function(obj) {
+    return (obj != null) && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
+  };
 
-    function Box(box) {
-      this.box = box;
-      this.update(this.box);
+  body = document.body;
+
+  html = document.documentElement;
+
+  DomBox = {
+    getBox: function(input) {
+      if (!input) {
+        return new this.Box;
+      }
+      if (typeof input === 'string') {
+        return new this.CollectionBox(input);
+      }
+      if (isElement(input)) {
+        return new this.ElementBox(input);
+      }
+      if (input instanceof DomBox.Box) {
+        return input;
+      }
+      return null;
+    },
+    getDistance: function(box1, box2) {
+      var bounding_box, result;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      bounding_box = getExtremes([box1, box2]);
+      result = {
+        horizontal: bounding_box.width - (box1.width + box2.width),
+        vertical: bounding_box.height - (box1.height + box2.height)
+      };
+      if (result.horizontal < 0) {
+        result.horizontal = 0;
+      }
+      if (result.vertical < 0) {
+        result.vertical = 0;
+      }
+      return result;
+    },
+    detectOverlap: function(box1, box2) {
+      var bounding_box, overlap;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      bounding_box = getExtremes([box1, box2]);
+      overlap = {
+        horizontal: bounding_box.width - (box1.width + box2.width),
+        vertical: bounding_box.height - (box1.height + box2.height)
+      };
+      return overlap.horizontal < 0 && overlap.vertical < 0;
+    },
+    getPivotDistance: function(box1, box2) {
+      var pivot1, pivot2, x, y;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      pivot1 = box1.getPivot();
+      pivot2 = box2.getPivot();
+      x = pivot1.left - pivot2.left;
+      y = pivot1.top - pivot2.top;
+      return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    },
+    getPivotAngle: function(box1, box2) {
+      var angle_deg, angle_rad, pivot1, pivot2;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      pivot1 = box1.getPivot();
+      pivot2 = box2.getPivot();
+      angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left);
+      angle_deg = radToDeg(angle_rad);
+      return normalizeAngle(angle_deg);
+    },
+    getDirection: function(box1, box2) {}
+  };
+
+  root = typeof exports === 'object' ? exports : this;
+
+  root.DomBox = DomBox;
+
+  DomBox.Box = (function() {
+    function Box() {
+      var property, _i, _len, _ref;
+      _ref = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        property = _ref[_i];
+        this[property] = 0;
+      }
+      this.padding = 0;
+      this.update();
     }
 
     Box.prototype.update = function() {
-      var key, val, _ref, _results;
-      _ref = this.getData(this.box);
-      _results = [];
-      for (key in _ref) {
-        val = _ref[key];
-        _results.push(this[key] = val);
-      }
-      return _results;
+      return this.pad(this.padding);
     };
 
-    Box.prototype.getData = function(box) {
-      var collection, element, items;
-      if (box != null) {
-        if (typeof box === 'string' && box !== '') {
-          collection = document.querySelectorAll(box);
-          items = (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = collection.length; _i < _len; _i++) {
-              element = collection[_i];
-              _results.push(this.getElementData(element));
-            }
-            return _results;
-          }).call(this);
-          if (items.length === 0) {
-            items.push(this.default_values);
-          }
-          return getExtremes(items);
-        }
-        if (isElement(box)) {
-          return this.getElementData(box);
-        }
-      }
-      return this.default_values;
+    Box.prototype.setPadding = function(padding) {
+      this.padding = padding;
+      return this.update();
     };
 
-    Box.prototype.getElementData = function(element) {
-      var box_data, document_position;
-      box_data = this.getBox(element);
-      document_position = this.getDocumentPosition(element);
+    Box.prototype.pad = function(padding) {
+      if (padding == null) {
+        padding = 0;
+      }
+      this.width += padding * 2;
+      this.height += padding * 2;
+      this.left -= padding;
+      this.top -= padding;
+      this.right += padding;
+      this.bottom += padding;
+      this.view_left -= padding;
+      this.view_top -= padding;
+      this.view_right += padding;
+      return this.view_bottom += padding;
+    };
+
+    Box.prototype.getPivot = function() {
       return {
-        width: box_data.width,
-        height: box_data.height,
-        left: document_position.left,
-        top: document_position.top,
-        right: document_position.left + box_data.width,
-        bottom: document_position.top + box_data.height,
-        view_left: box_data.left,
-        view_top: box_data.top,
-        view_right: box_data.left + box_data.width,
-        view_bottom: box_data.top + box_data.height
+        left: this.left + (this.width / 2),
+        top: this.top + (this.height / 2)
       };
     };
 
-    Box.prototype.getBox = function(element) {
-      return element.getBoundingClientRect();
+    return Box;
+
+  })();
+
+  DomBox.ElementBox = (function(_super) {
+    __extends(ElementBox, _super);
+
+    function ElementBox(element) {
+      this.element = element;
+      ElementBox.__super__.constructor.call(this);
+    }
+
+    ElementBox.prototype.update = function() {
+      var box_data, document_position;
+      document_position = this.getDocumentPosition(this.element);
+      box_data = this.element.getBoundingClientRect();
+      this.width = box_data.width;
+      this.height = box_data.height;
+      this.left = document_position.left;
+      this.top = document_position.top;
+      this.right = document_position.left + box_data.width;
+      this.bottom = document_position.top + box_data.height;
+      this.view_left = box_data.left;
+      this.view_top = box_data.top;
+      this.view_right = box_data.right;
+      this.view_bottom = box_data.bottom;
+      return ElementBox.__super__.update.call(this);
     };
 
-    Box.prototype.getDocumentPosition = function(element) {
+    ElementBox.prototype.getDocumentPosition = function(element) {
       var position;
       position = {
         left: 0,
@@ -149,216 +225,130 @@
       return position;
     };
 
-    Box.prototype.getPivot = function() {
-      return {
-        left: this.left + (this.width / 2),
-        top: this.top + (this.height / 2)
-      };
-    };
+    return ElementBox;
 
-    Box.prototype.pad = function(padding) {
-      if (padding == null) {
-        padding = 0;
-      }
-      return {
-        width: this.width + (padding * 2),
-        height: this.height + (padding * 2),
-        left: this.left - padding,
-        top: this.top - padding,
-        right: this.right + padding,
-        bottom: this.bottom + padding,
-        view_left: this.view_left - padding,
-        view_top: this.view_top - padding,
-        view_right: this.view_right + padding,
-        view_bottom: this.view_bottom + padding
-      };
-    };
+  })(DomBox.Box);
 
-    Box.prototype.isInViewport = function() {
-      var viewport;
-      this.update();
-      viewport = DomBox.viewport.getBox();
-      return this.view_left > viewport.left && this.view_right < viewport.right && this.view_bottom < viewport.bottom && this.view_top > viewport.top;
-    };
+  DomBox.CollectionBox = (function(_super) {
+    __extends(CollectionBox, _super);
 
-    Box.prototype.isPartialyInViewport = function() {
-      var attribute, _i, _len, _ref;
-      this.update();
-      _ref = ['view_left', 'view_top', 'view_right', 'view_bottom'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        attribute = _ref[_i];
-        if (this[attribute] > 0) {
-          return true;
+    function CollectionBox(selector) {
+      this.selector = selector;
+      CollectionBox.__super__.constructor.call(this);
+    }
+
+    CollectionBox.prototype.update = function() {
+      var boxes, element, property, value, _i, _len, _ref, _ref1, _results;
+      boxes = [];
+      if (this.selector) {
+        _ref = document.querySelectorAll(this.selector);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          element = _ref[_i];
+          boxes.push(new DomBox.ElementBox(element));
         }
       }
-      return false;
-    };
-
-    Box.prototype.canFitViewport = function() {
-      this.update();
-      return this.width <= DomBox.viewport.getWidth() && this.height <= DomBox.viewport.getHeight();
-    };
-
-    return Box;
-
-  })();
-
-  DomBox = {
-    Box: Box,
-    sanitizeBox: function(box) {
-      switch (typeof box) {
-        case 'string':
-          return new Box(box);
-        case 'object':
-          if (isElement(box)) {
-            return new Box(box);
-          } else {
-            return box;
-          }
-          break;
-        default:
-          return new Box();
+      if (boxes.length === 0) {
+        boxes.push(new DomBox.Box);
       }
+      _ref1 = getExtremes(boxes);
+      _results = [];
+      for (property in _ref1) {
+        value = _ref1[property];
+        _results.push(this[property] = value);
+      }
+      return _results;
+    };
+
+    return CollectionBox;
+
+  })(DomBox.Box);
+
+  DomBox.Document = {
+    getWidth: function() {
+      return Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
     },
-    getDistance: function(box1, box2) {
-      var bounding_box;
-      box1 = this.sanitizeBox(box1);
-      box2 = this.sanitizeBox(box2);
-      bounding_box = getExtremes([box1, box2]);
+    getHeight: function() {
+      return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    },
+    getSize: function() {
       return {
-        horizontal: bounding_box.width - (box1.width + box2.width),
-        vertical: bounding_box.height - (box1.height + box2.height)
+        width: DomBox.Document.getWidth(),
+        height: DomBox.Document.getHeight()
       };
-    },
-    detectOverlap: function(box1, box2) {
-      var distance;
-      distance = this.getDistance(box1, box2);
-      return distance.horizontal < 0 && distance.vertical < 0;
-    },
-    getPivotDistance: function(box1, box2) {
-      var pivot1, pivot2, x, y;
-      box1 = this.sanitizeBox(box1);
-      box2 = this.sanitizeBox(box2);
-      pivot1 = box1.getPivot();
-      pivot2 = box2.getPivot();
-      x = pivot1.left - pivot2.left;
-      y = pivot1.top - pivot2.top;
-      return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-    },
-    getPivotAngle: function(box1, box2) {
-      var angle_deg, angle_rad, pivot1, pivot2;
-      box1 = this.sanitizeBox(box1);
-      box2 = this.sanitizeBox(box2);
-      pivot1 = box1.getPivot();
-      pivot2 = box2.getPivot();
-      angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left);
-      angle_deg = radToDeg(angle_rad);
-      if (angle_deg < 0) {
-        angle_deg += 360;
-      }
-      return angle_deg;
-    },
-    getRelativeDirection: function(box1, box2) {
-      var angle;
-      angle = this.getPivotAngle(box1, box2);
-      switch (false) {
-        case !(angle > 337.5):
-          return 'right';
-        case !(angle > 292.5):
-          return 'top right';
-        case !(angle > 247.5):
-          return 'top';
-        case !(angle > 202.5):
-          return 'top left';
-        case !(angle > 157.5):
-          return 'left';
-        case !(angle > 112.5):
-          return 'bottom left';
-        case !(angle > 67.5):
-          return 'bottom';
-        case !(angle > 22.5):
-          return 'bottom right';
-        default:
-          return 'right';
-      }
-    },
-    canCoexist: function(box1, box2, lock_horizontal_scroll) {
-      var gap_horizontal, gap_left, gap_right, gap_vertical, viewport_height, viewport_width;
-      if (lock_horizontal_scroll == null) {
-        lock_horizontal_scroll = true;
-      }
-      box1 = this.sanitizeBox(box1);
-      box2 = this.sanitizeBox(box2);
-      viewport_width = this.viewport.getWidth();
-      viewport_height = this.viewport.getHeight();
-      gap_horizontal = viewport_width - box1.width;
-      gap_vertical = viewport_height - box1.height;
-      if (lock_horizontal_scroll) {
-        gap_left = box1.left;
-        gap_right = viewport_width - box1.right;
-        gap_horizontal = Math.max(gap_left, gap_right);
-      }
-      return box2.width <= gap_horizontal && box2.height <= gap_vertical;
-    },
-    document: {
-      getWidth: function() {
-        return Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
-      },
-      getHeight: function() {
-        return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-      },
-      getSize: function() {
-        return {
-          width: DomBox.document.getWidth(),
-          height: DomBox.document.getHeight()
-        };
-      }
-    },
-    scroll: {
-      getLeft: function() {
-        return (window.pageXOffset || html.scrollLeft) - (html.clientLeft || 0);
-      },
-      getTop: function() {
-        return (window.pageYOffset || html.scrollTop) - (html.clientTop || 0);
-      },
-      getPosition: function() {
-        return {
-          left: DomBox.scroll.getLeft(),
-          top: DomBox.scroll.getTop()
-        };
-      }
-    },
-    viewport: {
-      getWidth: function() {
-        return Math.max(html.clientWidth, window.innerWidth || 0);
-      },
-      getHeight: function() {
-        return Math.max(html.clientHeight, window.innerHeight || 0);
-      },
-      getSize: function() {
-        return {
-          width: DomBox.viewport.getWidth(),
-          height: DomBox.viewport.getHeight()
-        };
-      },
-      getBox: function() {
-        var scroll, size;
-        scroll = DomBox.scroll.getPosition();
-        size = DomBox.viewport.getSize();
-        return {
-          width: size.width,
-          height: size.height,
-          left: scroll.left,
-          top: scroll.top,
-          right: scroll.left + size.width,
-          bottom: scroll.top + size.height
-        };
-      }
     }
   };
 
-  root = typeof exports === 'object' ? exports : this;
+  DomBox.Scroll = {
+    getLeft: function() {
+      return (window.pageXOffset || html.scrollLeft) - (html.clientLeft || 0);
+    },
+    getTop: function() {
+      return (window.pageYOffset || html.scrollTop) - (html.clientTop || 0);
+    },
+    getPosition: function() {
+      return {
+        left: DomBox.Scroll.getLeft(),
+        top: DomBox.Scroll.getTop()
+      };
+    }
+  };
 
-  root.DomBox = DomBox;
+  DomBox.Viewport = {
+    getWidth: function() {
+      return Math.max(html.clientWidth, window.innerWidth || 0);
+    },
+    getHeight: function() {
+      return Math.max(html.clientHeight, window.innerHeight || 0);
+    },
+    getSize: function() {
+      return {
+        width: DomBox.Viewport.getWidth(),
+        height: DomBox.Viewport.getHeight()
+      };
+    },
+    getBox: function() {
+      var scroll, size;
+      scroll = DomBox.Scroll.getPosition();
+      size = DomBox.Viewport.getSize();
+      return {
+        width: size.width,
+        height: size.height,
+        left: scroll.left,
+        top: scroll.top,
+        right: scroll.left + size.width,
+        bottom: scroll.top + size.height
+      };
+    },
+    contains: function(box) {
+      var viewport;
+      if (box == null) {
+        return false;
+      }
+      viewport = this.getBox();
+      return viewport.left <= box.left && viewport.top <= box.top && viewport.right >= box.right && viewport.bottom >= box.bottom;
+    },
+    partialyContains: function(box) {
+      var viewport, _ref, _ref1, _ref2, _ref3;
+      if (box == null) {
+        return false;
+      }
+      viewport = this.getBox();
+      return ((viewport.left <= (_ref = box.left) && _ref < viewport.right) || (viewport.left > (_ref1 = box.right) && _ref1 >= viewport.right)) && ((viewport.top <= (_ref2 = box.top) && _ref2 < viewport.bottom) || (viewport.top > (_ref3 = box.bottom) && _ref3 >= viewport.bottom));
+    },
+    canContain: function(box) {
+      if (box == null) {
+        return false;
+      }
+      return box.width <= this.getWidth() && box.height <= this.getHeight();
+    },
+    canCoexist: function(box1, box2) {
+      var bounding_box;
+      if (!((box1 != null) && (box2 != null))) {
+        return false;
+      }
+      bounding_box = getExtremes([box1, box2]);
+      return bounding_box.width <= this.getWidth() && bounding_box.height <= this.getHeight();
+    }
+  };
 
 }).call(this);
