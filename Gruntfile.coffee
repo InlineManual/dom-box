@@ -11,19 +11,52 @@ module.exports = (grunt) ->
       test: 'test/src/*.coffee'
 
     jasmine:
+      options:
+        summary: true
+      utilities:
+        src: ['test/utilities/**/*.js']
+        options:
+          keepRunner: true
+          outfile: 'test/runner/utilities.html'
+          specs: 'test/spec/utilities/**/*.spec.js'
       default:
         src: ['build/*.js', '!build/*.min.js']
         options:
-          keepRunner: false
-          specs: 'test/spec/<%= pkg.name %>.spec.js'
+          keepRunner: true
+          outfile: 'test/runner/<%= pkg.name %>.html'
+          specs: 'test/spec/*.spec.js'
 
     coffee:
       src:
+        options:
+          join: true
         files:
-          'build/<%= pkg.name %>.js' : 'src/coffee/*.coffee'
+          'build/<%= pkg.name %>.js': [
+            'src/coffee/utilities/*.coffee'
+            'src/coffee/dom-box.coffee'
+            'src/coffee/box.coffee'
+            'src/coffee/element-box.coffee'
+            'src/coffee/collection-box.coffee'
+            'src/coffee/document.coffee'
+            'src/coffee/scroll.coffee'
+            'src/coffee/viewport.coffee'
+          ]
+      utilities:
+        options:
+          bare: true
+        expand: true
+        flatten: false
+        cwd: 'src/coffee/utilities'
+        src: ['**/*.coffee']
+        dest: 'test/utilities'
+        ext: '.js'
       test:
-        files:
-          'test/spec/<%= pkg.name %>.spec.js' : 'test/src/*.coffee'
+        expand: true
+        flatten: false
+        cwd: 'test/src'
+        src: ['**/*.spec.coffee']
+        dest: 'test/spec'
+        ext: '.spec.js'
 
     uglify:
       default:
@@ -39,15 +72,14 @@ module.exports = (grunt) ->
           'build/<%= pkg.name %>.min.js' : 'build/<%= pkg.name %>.js'
 
     watch:
-      options:
-        atBegin: true
-      src:
-        files: ['src/coffee/*.coffee']
-        tasks: ['coffeelint:src', 'coffee:src', 'jasmine']
-      test:
-        files: ['test/src/*.coffee']
-        tasks: ['coffeelint:test', 'coffee:test', 'jasmine']
-
+      default:
+        options:
+          atBegin: true
+        files: [
+          'src/coffee/**/*.coffee'
+          'test/src/**/*.coffee'
+        ]
+        tasks: ['coffeelint', 'coffee', 'jasmine']
 
     bump:
       options:
@@ -64,7 +96,6 @@ module.exports = (grunt) ->
     'coffee'
     'jasmine'
     'uglify'
-
   ]
 
   grunt.registerTask 'default', [
