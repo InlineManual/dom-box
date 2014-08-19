@@ -265,21 +265,6 @@
     }
   };
 
-  DomBox.Scroll = {
-    getLeft: function() {
-      return (window.pageXOffset || html.scrollLeft) - (html.clientLeft || 0);
-    },
-    getTop: function() {
-      return (window.pageYOffset || html.scrollTop) - (html.clientTop || 0);
-    },
-    getPosition: function() {
-      return {
-        left: DomBox.Scroll.getLeft(),
-        top: DomBox.Scroll.getTop()
-      };
-    }
-  };
-
   DomBox.Viewport = {
     getWidth: function() {
       return Math.max(html.clientWidth, window.innerWidth || 0);
@@ -293,17 +278,29 @@
         height: DomBox.Viewport.getHeight()
       };
     },
+    getLeft: function() {
+      return (window.pageXOffset || html.scrollLeft) - (html.clientLeft || 0);
+    },
+    getTop: function() {
+      return (window.pageYOffset || html.scrollTop) - (html.clientTop || 0);
+    },
+    getPosition: function() {
+      return {
+        left: DomBox.Viewport.getLeft(),
+        top: DomBox.Viewport.getTop()
+      };
+    },
     getBox: function() {
-      var scroll, size;
-      scroll = DomBox.Scroll.getPosition();
+      var position, size;
+      position = DomBox.Viewport.getPosition();
       size = DomBox.Viewport.getSize();
       return {
         width: size.width,
         height: size.height,
-        left: scroll.left,
-        top: scroll.top,
-        right: scroll.left + size.width,
-        bottom: scroll.top + size.height
+        left: position.left,
+        top: position.top,
+        right: position.left + size.width,
+        bottom: position.top + size.height
       };
     },
     contains: function(box) {

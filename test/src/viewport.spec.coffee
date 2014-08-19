@@ -22,12 +22,18 @@ createBox = (left, top, width, height) ->
 
 describe 'Viewport', ->
 
+  beforeEach ->
+    document.body.style.width = '1000px'
+    document.body.style.height = '1000px'
+
   afterEach ->
     window.scrollTo 0, 0
+    document.body.style.width = 'auto'
+    document.body.style.height = 'auto'
     for element in document.querySelectorAll '.aaa'
       element.parentNode.removeChild element
 
-  describe 'size methods', ->
+  describe 'size and position methods', ->
 
     it 'should exist', ->
       expect(DomBox.Viewport).toBeDefined()
@@ -43,9 +49,21 @@ describe 'Viewport', ->
       expect(size.width).toEqual viewport_size.width
       expect(size.height).toEqual viewport_size.height
 
+    it 'should get left position', ->
+      window.scrollTo 500, 500
+      expect(DomBox.Viewport.getLeft()).toEqual 500
+
+    it 'should get top position', ->
+      window.scrollTo 500, 500
+      expect(DomBox.Viewport.getTop()).toEqual 500
+
+    it 'should get position', ->
+      window.scrollTo 500, 500
+      position = DomBox.Viewport.getPosition()
+      expect(position.left).toEqual 500
+      expect(position.top).toEqual 500
+
     it 'should get box (including scroll position)', ->
-      document.body.style.width = '1000px'
-      document.body.style.height = '1000px'
       window.scrollTo 500, 500
       box = DomBox.Viewport.getBox()
       expect(box.width).toEqual viewport_size.width

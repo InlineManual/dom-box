@@ -38,7 +38,6 @@ module.exports = (grunt) ->
             'src/coffee/element-box.coffee'
             'src/coffee/collection-box.coffee'
             'src/coffee/document.coffee'
-            'src/coffee/scroll.coffee'
             'src/coffee/viewport.coffee'
           ]
       utilities:

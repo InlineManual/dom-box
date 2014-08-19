@@ -18,16 +18,28 @@ DomBox.Viewport =
       height: DomBox.Viewport.getHeight()
     }
 
+  getLeft: ->
+    (window.pageXOffset or html.scrollLeft) - (html.clientLeft or 0)
+
+  getTop: ->
+    (window.pageYOffset or html.scrollTop) - (html.clientTop or 0)
+
+  getPosition: ->
+    {
+      left: DomBox.Viewport.getLeft()
+      top: DomBox.Viewport.getTop()
+    }
+
   getBox: ->
-    scroll = DomBox.Scroll.getPosition()
+    position = DomBox.Viewport.getPosition()
     size = DomBox.Viewport.getSize()
     {
       width: size.width
       height: size.height
-      left: scroll.left
-      top: scroll.top
-      right: scroll.left + size.width
-      bottom: scroll.top + size.height
+      left: position.left
+      top: position.top
+      right: position.left + size.width
+      bottom: position.top + size.height
     }
 
   contains: (box) ->
