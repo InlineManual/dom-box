@@ -20,38 +20,29 @@
   };
 
   getExtremes = function(boxes) {
-    var box, data, key, property, result, val, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+    var all_properties, box, data, key, max_properties, min_properties, property, result, _i, _j, _k, _l, _len, _len1, _len2, _len3;
     if (boxes == null) {
       boxes = [];
     }
     result = {};
-    data = {
-      width: [],
-      height: [],
-      left: [],
-      top: [],
-      right: [],
-      bottom: [],
-      view_left: [],
-      view_top: [],
-      view_right: [],
-      view_bottom: []
-    };
-    for (_i = 0, _len = boxes.length; _i < _len; _i++) {
-      box = boxes[_i];
-      for (key in data) {
-        val = data[key];
+    min_properties = ['left', 'top', 'view_left', 'view_top'];
+    max_properties = ['right', 'bottom', 'view_right', 'view_bottom'];
+    all_properties = [].concat(min_properties, max_properties);
+    data = {};
+    for (_i = 0, _len = all_properties.length; _i < _len; _i++) {
+      key = all_properties[_i];
+      data[key] = [];
+      for (_j = 0, _len1 = boxes.length; _j < _len1; _j++) {
+        box = boxes[_j];
         data[key].push(box[key]);
       }
     }
-    _ref = ['left', 'top', 'view_left', 'view_top'];
-    for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-      property = _ref[_j];
+    for (_k = 0, _len2 = min_properties.length; _k < _len2; _k++) {
+      property = min_properties[_k];
       result[property] = Math.min.apply(null, data[property]);
     }
-    _ref1 = ['right', 'bottom', 'view_right', 'view_bottom'];
-    for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-      property = _ref1[_k];
+    for (_l = 0, _len3 = max_properties.length; _l < _len3; _l++) {
+      property = max_properties[_l];
       result[property] = Math.max.apply(null, data[property]);
     }
     result.width = result.right - result.left;
@@ -69,9 +60,6 @@
 
   DomBox = {
     getBox: function(input) {
-      if (!input) {
-        return new this.Box;
-      }
       if (typeof input === 'string') {
         return new this.CollectionBox(input);
       }
@@ -130,8 +118,7 @@
       angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left);
       angle_deg = radToDeg(angle_rad);
       return normalizeAngle(angle_deg);
-    },
-    getDirection: function(box1, box2) {}
+    }
   };
 
   root = typeof exports === 'object' ? exports : this;
@@ -321,6 +308,7 @@
     },
     contains: function(box) {
       var viewport;
+      box = DomBox.getBox(box);
       if (box == null) {
         return false;
       }
@@ -329,6 +317,7 @@
     },
     partialyContains: function(box) {
       var viewport, _ref, _ref1, _ref2, _ref3;
+      box = DomBox.getBox(box);
       if (box == null) {
         return false;
       }
@@ -336,6 +325,7 @@
       return ((viewport.left <= (_ref = box.left) && _ref < viewport.right) || (viewport.left > (_ref1 = box.right) && _ref1 >= viewport.right)) && ((viewport.top <= (_ref2 = box.top) && _ref2 < viewport.bottom) || (viewport.top > (_ref3 = box.bottom) && _ref3 >= viewport.bottom));
     },
     canContain: function(box) {
+      box = DomBox.getBox(box);
       if (box == null) {
         return false;
       }
@@ -343,6 +333,8 @@
     },
     canCoexist: function(box1, box2) {
       var bounding_box;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
       if (!((box1 != null) && (box2 != null))) {
         return false;
       }

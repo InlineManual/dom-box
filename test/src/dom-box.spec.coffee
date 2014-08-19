@@ -13,9 +13,9 @@ describe 'DomBox', ->
 
   describe 'getBox()', ->
 
-    it 'should return simple Box when called with no or invalid parameter', ->
+    it 'should return null when called with no or invalid parameter', ->
       box = DomBox.getBox null
-      expect(box instanceof DomBox.Box).toEqual true
+      expect(box).toEqual null
 
     it 'should return unchanged Box object when Box object is provided', ->
       box_original = new DomBox.Box

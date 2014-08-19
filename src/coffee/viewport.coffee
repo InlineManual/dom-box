@@ -31,6 +31,7 @@ DomBox.Viewport =
     }
 
   contains: (box) ->
+    box = DomBox.getBox box
     return false unless box?
     viewport = @getBox()
 
@@ -40,6 +41,7 @@ DomBox.Viewport =
     viewport.bottom >= box.bottom
 
   partialyContains: (box) ->
+    box = DomBox.getBox box
     return false unless box?
     viewport = @getBox()
 
@@ -53,12 +55,15 @@ DomBox.Viewport =
     )
 
   canContain: (box) ->
+    box = DomBox.getBox box
     return false unless box?
 
     box.width <= @getWidth() and
     box.height <= @getHeight()
 
   canCoexist: (box1, box2) ->
+    box1 = DomBox.getBox box1
+    box2 = DomBox.getBox box2
     return false unless box1? and box2?
 
     bounding_box = getExtremes [box1, box2]

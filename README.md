@@ -1,6 +1,6 @@
 # DOM Box
 
-Utility for working with dimensions and positions of DOM elements.
+Utility for working with dimensions, positions and relations between DOM elements.
 
 ## Bug reports, feature requests and contact
 

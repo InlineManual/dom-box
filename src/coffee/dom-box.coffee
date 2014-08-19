@@ -5,7 +5,6 @@ html = document.documentElement
 DomBox =
 
   getBox: (input) ->
-    return new @Box unless input
     return new @CollectionBox input if typeof input is 'string'
     return new @ElementBox input if isElement input
     return input if input instanceof DomBox.Box
@@ -62,8 +61,6 @@ DomBox =
     angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left)
     angle_deg = radToDeg angle_rad
     normalizeAngle angle_deg
-
-  getDirection: (box1, box2) ->
 
 # Expose object to the global namespace.
 root = if typeof exports is 'object' then exports else this
