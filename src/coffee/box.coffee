@@ -1,12 +1,14 @@
 class DomBox.Box
 
-  constructor: ->
-    # set default values
-    @[property] = 0 for property in [
+  _properties: [
       'width', 'height'
       'left', 'top', 'right', 'bottom'
       'view_left', 'view_top', 'view_right', 'view_bottom'
     ]
+
+  constructor: ->
+    # set default values
+    @[property] = 0 for property in @_properties
     @padding = 0
     @update()
 
@@ -33,3 +35,9 @@ class DomBox.Box
       left: @left + (@width / 2)
       top: @top + (@height / 2)
     }
+
+  # this makes debuging so much easier
+  toString: ->
+    result = {}
+    result[property] = @[property] for property in @_properties
+    JSON.stringify result

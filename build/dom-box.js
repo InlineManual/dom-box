@@ -126,9 +126,11 @@
   root.DomBox = DomBox;
 
   DomBox.Box = (function() {
+    Box.prototype._properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+
     function Box() {
       var property, _i, _len, _ref;
-      _ref = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+      _ref = this._properties;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         property = _ref[_i];
         this[property] = 0;
@@ -167,6 +169,17 @@
         left: this.left + (this.width / 2),
         top: this.top + (this.height / 2)
       };
+    };
+
+    Box.prototype.toString = function() {
+      var property, result, _i, _len, _ref;
+      result = {};
+      _ref = this._properties;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        property = _ref[_i];
+        result[property] = this[property];
+      }
+      return JSON.stringify(result);
     };
 
     return Box;

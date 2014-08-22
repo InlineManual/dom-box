@@ -63,3 +63,8 @@ describe 'Box', ->
     spyOn box, 'pad'
     box.update()
     expect(box.pad).toHaveBeenCalledWith 100
+
+  it 'should have `toString()` method', ->
+    result = JSON.parse box.toString()
+    for key, val of result
+      expect(result[key]).toEqual box[key]
