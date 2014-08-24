@@ -2,14 +2,14 @@
   "title": "DOM Box",
   "name": "dom-box",
   "version": "1.0.0",
-  "description": "Utility for working with dimensions and positions of DOM elements.",
+  "description": "Set of utilities for working with dimensions, positions and relations between DOM elements, viewport and the document itself.",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/fczbkk/dombox.git"
+    "url": "git@github.com:InlineManual/dom-box.git"
   },
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com/)",
   "license": "UNLICENSE",
-  "homepage": "https://bitbucket.org/fczbkk/dombox",
+  "homepage": "https://github.com/InlineManual/dom-box",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-coffeelint": "^0.0.10",

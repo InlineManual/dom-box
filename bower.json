@@ -2,12 +2,12 @@
   "name": "dom-box",
   "version": "1.0.0",
   "authors": [
-    "Riki Fridrich <riki@fczbkk.com>"
+    "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com/)"
   ],
-  "description": "Utility for working with dimensions and positions of DOM elements.",
+  "description": "Set of utilities for working with dimensions, positions and relations between DOM elements, viewport and the document itself.",
   "main": "build/dom-box.js",
   "license": "UNLICENSE",
-  "homepage": "https://bitbucket.org/fczbkk/dombox",
+  "homepage": "https://github.com/InlineManual/dom-box",
   "private": true,
   "ignore": [
     "**/.*",
