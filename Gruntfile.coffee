@@ -88,7 +88,6 @@ module.exports = (grunt) ->
         ]
         updateConfigs: ['pkg']
         commitFiles: ['-a']
-        push: false
 
   grunt.registerTask 'build', [
     'coffeelint'
