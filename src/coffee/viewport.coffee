@@ -98,20 +98,24 @@ DomBox.Viewport =
     if box2.width > viewport.width or box2.height > viewport.height
       return false
 
-    # Find biggest horizontal and vertical gap near box1. Zero values are there
-    # for the cases when box1 is out of viewport, resulting in negative values,
-    # which trigger invalid results.
-    horizontal_gap =  Math.max.apply null, [
-      0
-      box1.left - viewport.left
-      viewport.right - box1.right
-    ]
-
-    vertical_gap =  Math.max.apply null, [
-      0
-      box1.top - viewport.top
-      viewport.bottom - box1.bottom
-    ]
-
     # If box2 can fit into either of these gaps, return true
-    box2.width <= horizontal_gap or box2.height <= vertical_gap
+    gaps = DomBox.Viewport.getGaps box1
+
+    # return value
+    box2.width <= gaps.horizontal.before or
+    box2.width <= gaps.horizontal.after or
+    box2.height <= gaps.vertical.before or
+    box2.height <= gaps.vertical.after
+
+  # Returns horizontal and vertical sizes of gaps around the box.
+  getGaps: (box) ->
+    box = DomBox.getBox box
+    viewport = DomBox.Viewport.getBox()
+    {
+      horizontal:
+        before: Math.max 0, box.left - viewport.left
+        after: Math.max 0, viewport.right - box.right
+      vertical:
+        before: Math.max 0, box.top - viewport.top
+        after: Math.max 0, viewport.bottom - box.bottom
+    }

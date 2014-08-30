@@ -445,7 +445,7 @@
       return bounding_box.width <= this.getWidth() && bounding_box.height <= this.getHeight();
     },
     canFitAround: function(box1, box2) {
-      var horizontal_gap, vertical_gap, viewport;
+      var gaps, viewport;
       box1 = DomBox.getBox(box1);
       box2 = DomBox.getBox(box2);
       if (!((box1 != null) && (box2 != null))) {
@@ -455,9 +455,23 @@
       if (box2.width > viewport.width || box2.height > viewport.height) {
         return false;
       }
-      horizontal_gap = Math.max.apply(null, [0, box1.left - viewport.left, viewport.right - box1.right]);
-      vertical_gap = Math.max.apply(null, [0, box1.top - viewport.top, viewport.bottom - box1.bottom]);
-      return box2.width <= horizontal_gap || box2.height <= vertical_gap;
+      gaps = DomBox.Viewport.getGaps(box1);
+      return box2.width <= gaps.horizontal.before || box2.width <= gaps.horizontal.after || box2.height <= gaps.vertical.before || box2.height <= gaps.vertical.after;
+    },
+    getGaps: function(box) {
+      var viewport;
+      box = DomBox.getBox(box);
+      viewport = DomBox.Viewport.getBox();
+      return {
+        horizontal: {
+          before: Math.max(0, box.left - viewport.left),
+          after: Math.max(0, viewport.right - box.right)
+        },
+        vertical: {
+          before: Math.max(0, box.top - viewport.top),
+          after: Math.max(0, viewport.bottom - box.bottom)
+        }
+      };
     }
   };
 
