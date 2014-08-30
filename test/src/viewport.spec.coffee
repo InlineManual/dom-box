@@ -144,3 +144,78 @@ describe 'Viewport', ->
       expect(DomBox.Viewport.canCoexist box, null).toEqual false
       expect(DomBox.Viewport.canCoexist null, box).toEqual false
       expect(DomBox.Viewport.canCoexist null, null).toEqual false
+
+  describe 'can fit around', ->
+
+    describe 'box1 is inside viewport', ->
+
+      it 'should return true if box2 can fit', ->
+        box1 = createBox 100, 100, 100, 100
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'should return false if box2 can not fit', ->
+        box1 = createBox 100, 100, 100, 100
+        box2 = createBox 0, 0, 300, 300
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
+
+    describe 'box1 is partialy inside viewport', ->
+
+      it 'should return true if box2 can fit', ->
+        box1 = createBox 200, 200, 1000, 1000
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'should return false if box2 can not fit', ->
+        box1 = createBox 200, 200, 1000, 1000
+        box2 = createBox 0, 0, 300, 300
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
+
+    describe 'box1 is outside viewport', ->
+
+      it 'should return true if box2 can fit', ->
+        box1 = createBox 1000, 1000, 100, 100
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'should return false if box2 can not fit', ->
+        box1 = createBox 1000, 1000, 100, 100
+        box2 = createBox 0, 0, 1000, 1000
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
+
+    describe 'box1 is', ->
+
+      it 'on the left side', ->
+        box1 = createBox 0, 0, 200, 300
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'on the right side', ->
+        box1 = createBox 200, 0, 200, 300
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'on the upper side', ->
+        box1 = createBox 0, 0, 400, 100
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'on the bottom side', ->
+        box1 = createBox 0, 200, 400, 100
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'wider than viewport', ->
+        box1 = createBox -100, 100, 600, 100
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'higher than viewport', ->
+        box1 = createBox 100, -100, 100, 500
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
+
+      it 'bigger than viewport', ->
+        box1 = createBox -100, -100, 600, 500
+        box2 = createBox 0, 0, 100, 100
+        expect(DomBox.Viewport.canFitAround box1, box2).toEqual false

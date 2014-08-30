@@ -443,6 +443,21 @@
       }
       bounding_box = getExtremes([box1, box2]);
       return bounding_box.width <= this.getWidth() && bounding_box.height <= this.getHeight();
+    },
+    canFitAround: function(box1, box2) {
+      var horizontal_gap, vertical_gap, viewport;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      if (!((box1 != null) && (box2 != null))) {
+        return false;
+      }
+      viewport = DomBox.Viewport.getBox();
+      if (box2.width > viewport.width || box2.height > viewport.height) {
+        return false;
+      }
+      horizontal_gap = Math.max.apply(null, [0, box1.left - viewport.left, viewport.right - box1.right]);
+      vertical_gap = Math.max.apply(null, [0, box1.top - viewport.top, viewport.bottom - box1.bottom]);
+      return box2.width <= horizontal_gap || box2.height <= vertical_gap;
     }
   };
 

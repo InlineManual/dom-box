@@ -73,6 +73,8 @@ DomBox.Viewport =
     box.width <= @getWidth() and
     box.height <= @getHeight()
 
+  # Returns true if both boxes can fit together into the viewport.
+  # This only considers dimensions of boxes, not their positions.
   canCoexist: (box1, box2) ->
     box1 = DomBox.getBox box1
     box2 = DomBox.getBox box2
@@ -82,3 +84,34 @@ DomBox.Viewport =
 
     bounding_box.width <= @getWidth() and
     bounding_box.height <= @getHeight()
+
+  # Returns true if box2 can fit into the viewport without coliding with box1.
+  # This considers position of box1 within viewport.
+  canFitAround: (box1, box2) ->
+    box1 = DomBox.getBox box1
+    box2 = DomBox.getBox box2
+    return false unless box1? and box2?
+
+    viewport = DomBox.Viewport.getBox()
+
+    # can box2 itself fit the viewport?
+    if box2.width > viewport.width or box2.height > viewport.height
+      return false
+
+    # Find biggest horizontal and vertical gap near box1. Zero values are there
+    # for the cases when box1 is out of viewport, resulting in negative values,
+    # which trigger invalid results.
+    horizontal_gap =  Math.max.apply null, [
+      0
+      box1.left - viewport.left
+      viewport.right - box1.right
+    ]
+
+    vertical_gap =  Math.max.apply null, [
+      0
+      box1.top - viewport.top
+      viewport.bottom - box1.bottom
+    ]
+
+    # If box2 can fit into either of these gaps, return true
+    box2.width <= horizontal_gap or box2.height <= vertical_gap
