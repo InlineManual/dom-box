@@ -82,12 +82,9 @@ module.exports = (grunt) ->
 
     bump:
       options:
-        files: [
-          'package.json'
-          'bower.json'
-        ]
+        files: ['package.json', 'bower.json']
         updateConfigs: ['pkg']
-        commitFiles: ['-a']
+        commitFiles: ['package.json', 'bower.json']
 
   grunt.registerTask 'build', [
     'coffeelint'
