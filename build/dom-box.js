@@ -171,6 +171,99 @@
       };
     };
 
+    Box.prototype.moveTo = function(left, top) {
+      var diff_horizontal, diff_vertical;
+      if (left == null) {
+        left = this.left;
+      }
+      if (top == null) {
+        top = this.top;
+      }
+      if (!isNaN(left)) {
+        diff_horizontal = this.left - left;
+        this.left = left;
+        this.right = this.left + this.width;
+        this.view_left -= diff_horizontal;
+        this.view_right -= diff_horizontal;
+      }
+      if (!isNaN(top)) {
+        diff_vertical = this.top - top;
+        this.top = top;
+        this.bottom = this.top + this.height;
+        this.view_top -= diff_vertical;
+        return this.view_bottom -= diff_vertical;
+      }
+    };
+
+    Box.prototype.moveBy = function(left, top) {
+      if (left == null) {
+        left = 0;
+      }
+      if (top == null) {
+        top = 0;
+      }
+      if (!isNaN(left)) {
+        this.left = this.left + left;
+        this.right = this.left + this.width;
+        this.view_left = this.view_left + left;
+        this.view_right = this.view_right + left;
+      }
+      if (!isNaN(top)) {
+        this.top += top;
+        this.bottom = this.top + this.height;
+        this.view_top += top;
+        return this.view_bottom += top;
+      }
+    };
+
+    Box.prototype.resizeTo = function(width, height) {
+      if (width == null) {
+        width = this.width;
+      }
+      if (height == null) {
+        height = this.height;
+      }
+      if (!isNaN(width)) {
+        this.width = width < 0 ? 0 : width;
+        this.right = this.left + this.width;
+        this.view_right = this.view_left + this.width;
+      }
+      if (!isNaN(height)) {
+        this.height = height < 0 ? 0 : height;
+        this.bottom = this.top + this.height;
+        return this.view_bottom = this.view_top + this.height;
+      }
+    };
+
+    Box.prototype.setSize = function(width, height) {
+      return this.resizeTo(width, height);
+    };
+
+    Box.prototype.resizeBy = function(width, height) {
+      if (width == null) {
+        width = 0;
+      }
+      if (height == null) {
+        height = 0;
+      }
+      if (!isNaN(width)) {
+        this.width = this.width + width;
+        if (this.width < 0) {
+          this.width = 0;
+        }
+        this.right = this.left + this.width;
+        this.view_right = this.view_left + this.width;
+      }
+      if (!isNaN(height)) {
+        this.height = this.height + height;
+        if (this.height < 0) {
+          this.height = 0;
+        }
+        this.bottom = this.top + this.height;
+        return this.view_bottom = this.view_top + this.height;
+      }
+    };
+
     Box.prototype.toString = function() {
       var property, result, _i, _len, _ref;
       result = {};

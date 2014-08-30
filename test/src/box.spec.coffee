@@ -28,43 +28,47 @@ describe 'Box', ->
     expect(box.view_right  ).toEqual 0
     expect(box.view_bottom ).toEqual 0
 
-  it 'should get pivot', ->
-    pivot = box.getPivot()
-    expect(pivot.left).toEqual 350
-    expect(pivot.top).toEqual 500
-
-  it 'should add padding', ->
-    padded_box = box.pad 50
-    expect(box.width       ).toEqual  200
-    expect(box.height      ).toEqual  300
-    expect(box.left        ).toEqual  250
-    expect(box.top         ).toEqual  350
-    expect(box.right       ).toEqual  550
-    expect(box.bottom      ).toEqual  650
-    expect(box.view_left   ).toEqual  650
-    expect(box.view_top    ).toEqual  750
-    expect(box.view_right  ).toEqual  950
-    expect(box.view_bottom ).toEqual 1050
-
-  it 'should have default padding', ->
-    expect(box.padding).toBeDefined()
-
-  it 'should set default padding', ->
-    box.setPadding 100
-    expect(box.padding).toEqual 100
-
-  it 'should update when padding is set', ->
-    spyOn box, 'update'
-    box.setPadding 100
-    expect(box.update).toHaveBeenCalled()
-
-  it 'should apply default padding on every update', ->
-    box.setPadding 100
-    spyOn box, 'pad'
-    box.update()
-    expect(box.pad).toHaveBeenCalledWith 100
-
   it 'should have `toString()` method', ->
     result = JSON.parse box.toString()
     for key, val of result
       expect(result[key]).toEqual box[key]
+
+  describe 'pivot', ->
+
+    it 'should get pivot', ->
+      pivot = box.getPivot()
+      expect(pivot.left).toEqual 350
+      expect(pivot.top).toEqual 500
+
+  describe 'padding', ->
+
+    it 'should add padding', ->
+      padded_box = box.pad 50
+      expect(box.width       ).toEqual  200
+      expect(box.height      ).toEqual  300
+      expect(box.left        ).toEqual  250
+      expect(box.top         ).toEqual  350
+      expect(box.right       ).toEqual  550
+      expect(box.bottom      ).toEqual  650
+      expect(box.view_left   ).toEqual  650
+      expect(box.view_top    ).toEqual  750
+      expect(box.view_right  ).toEqual  950
+      expect(box.view_bottom ).toEqual 1050
+
+    it 'should have default padding', ->
+      expect(box.padding).toBeDefined()
+
+    it 'should set default padding', ->
+      box.setPadding 100
+      expect(box.padding).toEqual 100
+
+    it 'should update when padding is set', ->
+      spyOn box, 'update'
+      box.setPadding 100
+      expect(box.update).toHaveBeenCalled()
+
+    it 'should apply default padding on every update', ->
+      box.setPadding 100
+      spyOn box, 'pad'
+      box.update()
+      expect(box.pad).toHaveBeenCalledWith 100
