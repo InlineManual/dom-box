@@ -73,6 +73,69 @@ describe 'Viewport', ->
       expect(box.bottom).toEqual 500 + viewport_size.height
       expect(box.right).toEqual 500 + viewport_size.width
 
+  describe 'move inside', ->
+
+    it 'should not change position of box contained in viewport', ->
+    it 'should match top-left corners of viewport and box that can not fit', ->
+
+    describe 'box is', ->
+
+      beforeEach ->
+        window.scrollTo 500, 500
+
+      it 'above the viewport', ->
+        box = createBox 500, 0, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.top).toEqual 500
+
+      it 'above and to the right of the viewport', ->
+        box = createBox 800, 0, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.top).toEqual 500
+        expect(box.right).toEqual 900
+
+      it 'to the right of the viewport', ->
+        box = createBox 800, 500, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.right).toEqual 900
+
+      it 'below and to the right of the viewport', ->
+        box = createBox 800, 800, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.bottom).toEqual 800
+        expect(box.right).toEqual 900
+
+      it 'below the viewport', ->
+        box = createBox 500, 800, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.bottom).toEqual 800
+
+      it 'below and to the left of the viewport', ->
+        box = createBox 0, 800, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.bottom).toEqual 800
+        expect(box.left).toEqual 500
+
+      it 'to the left of the viewport', ->
+        box = createBox 0, 500, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.left).toEqual 500
+
+      it 'above and to the left of the viewport', ->
+        box = createBox 0, 0, 100, 100
+        DomBox.Viewport.moveInside box
+        expect(DomBox.Viewport.contains box).toEqual true
+        expect(box.top).toEqual 500
+        expect(box.left).toEqual 500
+
+
   describe 'contains box', ->
 
     it 'should return true if box is completly within viewport', ->
@@ -219,3 +282,47 @@ describe 'Viewport', ->
         box1 = createBox -100, -100, 600, 500
         box2 = createBox 0, 0, 100, 100
         expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
+
+  describe 'fit around', ->
+
+    it 'box on the left side', ->
+      box1 = createBox 0, 0, 200, 300
+      box2 = createBox 0, 0, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false
+
+    it 'box on the right side', ->
+      box1 = createBox 200, 0, 200, 300
+      box2 = createBox 200, 0, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false
+
+    it 'box on the upper side', ->
+      box1 = createBox 0, 0, 400, 100
+      box2 = createBox 0, 0, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false
+
+    it 'box on the bottom side', ->
+      box1 = createBox 0, 200, 400, 100
+      box2 = createBox 0, 200, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false
+
+    it 'box wider than viewport', ->
+      box1 = createBox -100, 100, 600, 100
+      box2 = createBox -100, 100, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false
+
+    it 'box higher than viewport', ->
+      box1 = createBox 100, -100, 100, 500
+      box2 = createBox 100, -100, 100, 100
+      DomBox.Viewport.fitAround box1, box2
+      expect(DomBox.Viewport.contains box2).toEqual true
+      expect(DomBox.detectOverlap box1, box2).toEqual false

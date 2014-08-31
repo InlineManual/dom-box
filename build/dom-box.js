@@ -409,6 +409,28 @@
         bottom: position.top + size.height
       };
     },
+    moveInside: function(box) {
+      var position, viewport;
+      box = DomBox.getBox(box);
+      viewport = DomBox.Viewport.getBox();
+      position = {
+        left: null,
+        top: null
+      };
+      if (box.right > viewport.right) {
+        position.left = viewport.right - box.width;
+      }
+      if (box.bottom > viewport.bottom) {
+        position.top = viewport.bottom - box.height;
+      }
+      if (box.left < viewport.left) {
+        position.left = viewport.left;
+      }
+      if (box.top < viewport.top) {
+        position.top = viewport.top;
+      }
+      return box.moveTo(position.left, position.top);
+    },
     contains: function(box) {
       var viewport;
       box = DomBox.getBox(box);
@@ -457,6 +479,39 @@
       }
       gaps = DomBox.Viewport.getGaps(box1);
       return box2.width <= gaps.horizontal.before || box2.width <= gaps.horizontal.after || box2.height <= gaps.vertical.before || box2.height <= gaps.vertical.after;
+    },
+    fitAround: function(box1, box2) {
+      var gaps;
+      box1 = DomBox.getBox(box1);
+      box2 = DomBox.getBox(box2);
+      if (DomBox.Viewport.canFitAround(box1, box2)) {
+        gaps = DomBox.Viewport.getGaps(box1);
+        DomBox.Viewport.moveInside(box2);
+        if (!DomBox.detectOverlap(box1, box2)) {
+          return;
+        }
+        if (box2.width <= gaps.horizontal.before) {
+          box2.moveTo(box1.left - box2.width, null);
+        }
+        if (!DomBox.detectOverlap(box1, box2)) {
+          return;
+        }
+        if (box2.height <= gaps.vertical.before) {
+          box2.moveTo(null, box1.top - box2.height);
+        }
+        if (!DomBox.detectOverlap(box1, box2)) {
+          return;
+        }
+        if (box2.width <= gaps.horizontal.after) {
+          box2.moveTo(box1.right, null);
+        }
+        if (!DomBox.detectOverlap(box1, box2)) {
+          return;
+        }
+        if (box2.height <= gaps.vertical.after) {
+          return box2.moveTo(null, box1.bottom);
+        }
+      }
     },
     getGaps: function(box) {
       var viewport;
