@@ -42,6 +42,25 @@ DomBox.Viewport =
       bottom: position.top + size.height
     }
 
+  # Adjusts position of box so that it is contained within viewport. If the box
+  # can not fit, its top-left corner matches viewports top-left corner. If the
+  # box is within viewport, its position does not change.
+  moveInside: (box) ->
+    box = DomBox.getBox box
+    viewport = DomBox.Viewport.getBox()
+    position = {left: null, top: null}
+
+    if box.right > viewport.right
+      position.left = viewport.right - box.width
+    if box.bottom > viewport.bottom
+      position.top = viewport.bottom - box.height
+    if box.left < viewport.left
+      position.left = viewport.left
+    if box.top < viewport.top
+      position.top = viewport.top
+
+    box.moveTo position.left, position.top
+
   contains: (box) ->
     box = DomBox.getBox box
     return false unless box?
@@ -106,6 +125,34 @@ DomBox.Viewport =
     box2.width <= gaps.horizontal.after or
     box2.height <= gaps.vertical.before or
     box2.height <= gaps.vertical.after
+
+  # Adjusts position of box2 so that it is fully in viewport and does not
+  # colide with box1.
+  fitAround: (box1, box2) ->
+    box1 = DomBox.getBox box1
+    box2 = DomBox.getBox box2
+
+    if DomBox.Viewport.canFitAround box1, box2
+      gaps = DomBox.Viewport.getGaps box1
+
+      DomBox.Viewport.moveInside box2
+
+      return unless DomBox.detectOverlap box1, box2
+      if box2.width <= gaps.horizontal.before
+        box2.moveTo (box1.left - box2.width), null
+
+      return unless DomBox.detectOverlap box1, box2
+      if box2.height <= gaps.vertical.before
+        box2.moveTo null, (box1.top - box2.height)
+
+      return unless DomBox.detectOverlap box1, box2
+      if box2.width <= gaps.horizontal.after
+        box2.moveTo box1.right, null
+
+      return unless DomBox.detectOverlap box1, box2
+      if box2.height <= gaps.vertical.after
+        box2.moveTo null, box1.bottom
+
 
   # Returns horizontal and vertical sizes of gaps around the box.
   getGaps: (box) ->
