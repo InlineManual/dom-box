@@ -166,3 +166,6 @@ DomBox.Viewport =
         before: Math.max 0, box.top - viewport.top
         after: Math.max 0, viewport.bottom - box.bottom
     }
+
+  # very handy for debuging
+  toString: -> JSON.stringify DomBox.Viewport.getBox()

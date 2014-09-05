@@ -527,6 +527,9 @@
           after: Math.max(0, viewport.bottom - box.bottom)
         }
       };
+    },
+    toString: function() {
+      return JSON.stringify(DomBox.Viewport.getBox());
     }
   };
 
