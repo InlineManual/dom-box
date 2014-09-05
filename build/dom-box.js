@@ -447,7 +447,7 @@
         return false;
       }
       viewport = this.getBox();
-      return ((viewport.left <= (_ref = box.left) && _ref < viewport.right) || (viewport.left > (_ref1 = box.right) && _ref1 >= viewport.right)) && ((viewport.top <= (_ref2 = box.top) && _ref2 < viewport.bottom) || (viewport.top > (_ref3 = box.bottom) && _ref3 >= viewport.bottom));
+      return ((viewport.left <= (_ref = box.left) && _ref < viewport.right) || (viewport.left < (_ref1 = box.right) && _ref1 <= viewport.right)) && ((viewport.top <= (_ref2 = box.top) && _ref2 < viewport.bottom) || (viewport.top < (_ref3 = box.bottom) && _ref3 <= viewport.bottom));
     },
     canContain: function(box) {
       box = DomBox.getBox(box);

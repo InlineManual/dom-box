@@ -160,6 +160,9 @@ describe 'Viewport', ->
       box = createBox 350, 250, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual true
 
+      box = createBox -50, -50, 100, 100
+      expect(DomBox.Viewport.partialyContains box).toEqual true
+
     it 'should return false if box is outside viewport', ->
       box = createBox 500, 500, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual false

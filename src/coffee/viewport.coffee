@@ -78,11 +78,11 @@ DomBox.Viewport =
 
     (
       viewport.left <= box.left < viewport.right or
-      viewport.left > box.right >= viewport.right
+      viewport.left < box.right <= viewport.right
     ) and
     (
       viewport.top <= box.top < viewport.bottom or
-      viewport.top > box.bottom >= viewport.bottom
+      viewport.top < box.bottom <= viewport.bottom
     )
 
   canContain: (box) ->
