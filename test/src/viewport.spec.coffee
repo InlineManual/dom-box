@@ -4,6 +4,10 @@ viewport_size =
   width: 400
   height: 300
 
+# DEBUG Karma tests
+viewport_size =
+  width: DomBox.Viewport.getWidth()
+  height: DomBox.Viewport.getHeight()
 
 createElement = (left, top, width, height) ->
   elm = document.createElement 'div'
@@ -23,8 +27,8 @@ createBox = (left, top, width, height) ->
 describe 'Viewport', ->
 
   beforeEach ->
-    document.body.style.width = '1000px'
-    document.body.style.height = '1000px'
+    document.body.style.width = '10000px'
+    document.body.style.height = '10000px'
 
   afterEach ->
     window.scrollTo 0, 0
@@ -75,8 +79,8 @@ describe 'Viewport', ->
 
   describe 'move inside', ->
 
-    it 'should not change position of box contained in viewport', ->
-    it 'should match top-left corners of viewport and box that can not fit', ->
+    xit 'should not change position of box contained in viewport', ->
+    xit 'should match top-left corners of viewport and box that can not fit', ->
 
     describe 'box is', ->
 
@@ -103,23 +107,23 @@ describe 'Viewport', ->
         expect(box.right).toEqual 900
 
       it 'below and to the right of the viewport', ->
-        box = createBox 800, 800, 100, 100
+        box = createBox 5000, 5000, 100, 100
         DomBox.Viewport.moveInside box
         expect(DomBox.Viewport.contains box).toEqual true
-        expect(box.bottom).toEqual 800
-        expect(box.right).toEqual 900
+        expect(box.bottom).toEqual DomBox.Viewport.getBox().bottom
+        expect(box.right).toEqual DomBox.Viewport.getBox().right
 
       it 'below the viewport', ->
-        box = createBox 500, 800, 100, 100
+        box = createBox 500, 5000, 100, 100
         DomBox.Viewport.moveInside box
         expect(DomBox.Viewport.contains box).toEqual true
-        expect(box.bottom).toEqual 800
+        expect(box.bottom).toEqual DomBox.Viewport.getBox().bottom
 
       it 'below and to the left of the viewport', ->
-        box = createBox 0, 800, 100, 100
+        box = createBox 0, 5000, 100, 100
         DomBox.Viewport.moveInside box
         expect(DomBox.Viewport.contains box).toEqual true
-        expect(box.bottom).toEqual 800
+        expect(box.bottom).toEqual DomBox.Viewport.getBox().bottom
         expect(box.left).toEqual 500
 
       it 'to the left of the viewport', ->
@@ -143,11 +147,13 @@ describe 'Viewport', ->
       expect(DomBox.Viewport.contains box).toEqual true
 
     it 'should return false if box is partialy within viewport', ->
-      box = createBox 350, 250, 100, 100
+      right = viewport_size.width - 50
+      bottom = viewport_size.height - 50
+      box = createBox right, bottom, 100, 100
       expect(DomBox.Viewport.contains box).toEqual false
 
     it 'should return false if box is outside viewport', ->
-      box = createBox 500, 500, 100, 100
+      box = createBox 5000, 5000, 100, 100
       expect(DomBox.Viewport.contains box).toEqual false
 
   describe 'partialy contains box', ->
@@ -157,14 +163,16 @@ describe 'Viewport', ->
       expect(DomBox.Viewport.partialyContains box).toEqual true
 
     it 'should return true if box is partialy within viewport', ->
-      box = createBox 350, 250, 100, 100
+      outside_right = viewport_size.width - 50
+      outside_bottom = viewport_size.height - 50
+      box = createBox outside_right, outside_bottom, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual true
 
       box = createBox -50, -50, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual true
 
     it 'should return false if box is outside viewport', ->
-      box = createBox 500, 500, 100, 100
+      box = createBox 5000, 5000, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual false
 
   describe 'can contain box', ->
@@ -174,7 +182,7 @@ describe 'Viewport', ->
       expect(DomBox.Viewport.canContain box).toEqual true
 
     it 'should return false if box is wider than viewport', ->
-      box = createBox 0, 0, 1000, 100
+      box = createBox 0, 0, 5000, 100
       expect(DomBox.Viewport.canContain box).toEqual false
 
     it 'should return false if box is higher than viewport', ->
@@ -222,7 +230,7 @@ describe 'Viewport', ->
 
       it 'should return false if box2 can not fit', ->
         box1 = createBox 100, 100, 100, 100
-        box2 = createBox 0, 0, 300, 300
+        box2 = createBox 0, 0, 5000, 5000
         expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
 
     describe 'box1 is partialy inside viewport', ->
@@ -282,7 +290,7 @@ describe 'Viewport', ->
         expect(DomBox.Viewport.canFitAround box1, box2).toEqual true
 
       it 'bigger than viewport', ->
-        box1 = createBox -100, -100, 600, 500
+        box1 = createBox -100, -100, 5000, 5000
         box2 = createBox 0, 0, 100, 100
         expect(DomBox.Viewport.canFitAround box1, box2).toEqual false
 

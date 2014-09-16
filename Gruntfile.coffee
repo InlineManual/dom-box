@@ -25,6 +25,14 @@ module.exports = (grunt) ->
           keepRunner: true
           outfile: 'test/runner/<%= pkg.name %>.html'
           specs: 'test/spec/*.spec.js'
+          page:
+            viewportSize:
+              width: 1000
+              height: 1000
+
+    karma:
+      default:
+        configFile: 'test/karma.conf.coffee'
 
     coffee:
       src:
