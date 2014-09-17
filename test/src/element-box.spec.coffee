@@ -33,17 +33,37 @@ describe 'Element Box', ->
   it 'should be associated with an element', ->
     expect(box.element).toEqual elm
 
-  it 'should get box data on init', ->
-    expect(box.width       ).toEqual 300
-    expect(box.height      ).toEqual 400
-    expect(box.left        ).toEqual 200
-    expect(box.top         ).toEqual 100
-    expect(box.right       ).toEqual 500
-    expect(box.bottom      ).toEqual 500
-    expect(box.view_left   ).toEqual 150
-    expect(box.view_top    ).toEqual  50
-    expect(box.view_right  ).toEqual 450
-    expect(box.view_bottom ).toEqual 450
+  describe 'box data on init', ->
+
+    it 'should get width', ->
+      expect(box.width       ).toEqual 300
+
+    it 'should get height', ->
+      expect(box.height      ).toEqual 400
+
+    it 'should get left', ->
+      expect(box.left        ).toEqual 200
+
+    it 'should get top', ->
+      expect(box.top         ).toEqual 100
+
+    it 'should get right', ->
+      expect(box.right       ).toEqual 500
+
+    it 'should get bottom', ->
+      expect(box.bottom      ).toEqual 500
+
+    it 'should get view_left', ->
+      expect(box.view_left   ).toEqual 150
+
+    it 'should get view_top', ->
+      expect(box.view_top    ).toEqual  50
+
+    it 'should get view_right', ->
+      expect(box.view_right  ).toEqual 450
+
+    it 'should get view_bottom', ->
+      expect(box.view_bottom ).toEqual 450
 
   it 'should update box data', ->
     elm.style.width = '800px'

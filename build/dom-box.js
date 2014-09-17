@@ -288,15 +288,15 @@
     }
 
     ElementBox.prototype.update = function() {
-      var box_data, document_position;
+      var box_data, document_position, _ref, _ref1;
       document_position = this.getDocumentPosition(this.element);
       box_data = this.element.getBoundingClientRect();
-      this.width = box_data.width;
-      this.height = box_data.height;
+      this.width = (_ref = box_data.width) != null ? _ref : this.element.offsetWidth;
+      this.height = (_ref1 = box_data.height) != null ? _ref1 : this.element.offsetHeight;
       this.left = document_position.left;
       this.top = document_position.top;
-      this.right = document_position.left + box_data.width;
-      this.bottom = document_position.top + box_data.height;
+      this.right = document_position.left + this.width;
+      this.bottom = document_position.top + this.height;
       this.view_left = box_data.left;
       this.view_top = box_data.top;
       this.view_right = box_data.right;

@@ -86,7 +86,11 @@ module.exports = (grunt) ->
           'src/coffee/**/*.coffee'
           'test/src/**/*.coffee'
         ]
-        tasks: ['coffeelint', 'coffee', 'jasmine']
+        tasks: [
+          'coffeelint'
+          'coffee'
+          # 'jasmine'
+        ]
 
     bump:
       options:
@@ -95,13 +99,22 @@ module.exports = (grunt) ->
         commitFiles: ['package.json', 'bower.json']
         push: false
 
+    concurrent:
+      default:
+        tasks: [
+          'karma'
+          'watch'
+        ]
+        options:
+          logConcurrentOutput: true
+
   grunt.registerTask 'build', [
     'coffeelint'
     'coffee'
-    'jasmine'
+    # 'jasmine'
     'uglify'
   ]
 
   grunt.registerTask 'default', [
-    'watch'
+    'concurrent'
   ]

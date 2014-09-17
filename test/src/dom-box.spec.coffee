@@ -26,7 +26,8 @@ describe 'DomBox', ->
       box_copy = new DomBox.getBox box_original
       expect(box_copy).toEqual box_original
 
-      box_original = new DomBox.ElementBox document.createElement 'div'
+      element_reference = document.body.appendChild document.createElement 'div'
+      box_original = new DomBox.ElementBox element_reference
       box_copy = new DomBox.getBox box_original
       expect(box_copy).toEqual box_original
 
@@ -35,7 +36,8 @@ describe 'DomBox', ->
       expect(box instanceof DomBox.CollectionBox).toEqual true
 
     it 'should return element Box when element reference is provided', ->
-      box = DomBox.getBox document.createElement 'div'
+      element_reference = document.body.appendChild document.createElement 'div'
+      box = DomBox.getBox element_reference
       expect(box instanceof DomBox.ElementBox).toEqual true
 
   describe 'box relations', ->

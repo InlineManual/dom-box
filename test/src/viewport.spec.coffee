@@ -5,6 +5,13 @@ viewport_size =
   height: 300
 
 # DEBUG Karma tests
+
+# stretch the body size first, so that the scrollbars are displayed
+# we need to do this before we measure the viewport
+document.body.style.width = '10000px'
+document.body.style.height = '10000px'
+
+# hey, this is cheating
 viewport_size =
   width: DomBox.Viewport.getWidth()
   height: DomBox.Viewport.getHeight()
