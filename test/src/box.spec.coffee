@@ -35,10 +35,47 @@ describe 'Box', ->
 
   describe 'pivot', ->
 
+    elm = null
+
+    beforeEach ->
+      document.body.style.width = '10000px'
+      document.body.style.height = '10000px'
+      window.scrollTo 500, 500
+
+      elm = document.body.appendChild document.createElement 'div'
+      elm_style =
+        position: 'absolute'
+        width:    '100px'
+        height:   '200px'
+        top:      '300px'
+        left:     '400px'
+      elm.style[key] = val for key, val of elm_style
+
+    afterEach ->
+      window.scrollTo 0, 0
+      document.body.style.width = 'auto'
+      document.body.style.height = 'auto'
+
+      elm.parentNode.removeChild elm
+
     it 'should get pivot', ->
       pivot = box.getPivot()
       expect(pivot.left).toEqual 350
       expect(pivot.top).toEqual 500
+
+    it 'should get pivot of element box', ->
+      box = DomBox.getBox elm
+      pivot = box.getPivot()
+      expect(pivot.left).toEqual 450
+      expect(pivot.top).toEqual 400
+
+    it 'should get pivot of padded element box', ->
+      box = DomBox.getBox elm
+      box.setPadding 100
+      pivot = box.getPivot()
+      expect(pivot.left).toEqual 450
+      expect(pivot.top).toEqual 400
+
 
   describe 'padding', ->
 

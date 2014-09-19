@@ -36,34 +36,34 @@ describe 'Element Box', ->
   describe 'box data on init', ->
 
     it 'should get width', ->
-      expect(box.width       ).toEqual 300
+      expect(box.width       ).toBe 300
 
     it 'should get height', ->
-      expect(box.height      ).toEqual 400
+      expect(box.height      ).toBe 400
 
     it 'should get left', ->
-      expect(box.left        ).toEqual 200
+      expect(box.left        ).toBe 200
 
     it 'should get top', ->
-      expect(box.top         ).toEqual 100
+      expect(box.top         ).toBe 100
 
     it 'should get right', ->
-      expect(box.right       ).toEqual 500
+      expect(box.right       ).toBe 500
 
     it 'should get bottom', ->
-      expect(box.bottom      ).toEqual 500
+      expect(box.bottom      ).toBe 500
 
     it 'should get view_left', ->
-      expect(box.view_left   ).toEqual 150
+      expect(box.view_left   ).toBe 150
 
     it 'should get view_top', ->
-      expect(box.view_top    ).toEqual  50
+      expect(box.view_top    ).toBe  50
 
     it 'should get view_right', ->
-      expect(box.view_right  ).toEqual 450
+      expect(box.view_right  ).toBe 450
 
     it 'should get view_bottom', ->
-      expect(box.view_bottom ).toEqual 450
+      expect(box.view_bottom ).toBe 450
 
   it 'should update box data', ->
     elm.style.width = '800px'
@@ -73,7 +73,7 @@ describe 'Element Box', ->
     expect(box.width).toEqual 800
     expect(box.height).toEqual 900
 
-  it 'should zero values if associated element does not exist', ->
+  it 'should have zero values if associated element does not exist', ->
     elm.parentNode.removeChild elm
     box.update()
 
