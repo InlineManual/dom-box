@@ -38,6 +38,20 @@ describe 'Collection Box', ->
     expect(box.view_right  ).toEqual 500
     expect(box.view_bottom ).toEqual 500
 
+  it 'should apply padding', ->
+    box.setPadding 10
+    expect(box.width       ).toEqual 420
+    expect(box.height      ).toEqual 420
+    expect(box.left        ).toEqual 90
+    expect(box.top         ).toEqual 90
+    expect(box.right       ).toEqual 510
+    expect(box.bottom      ).toEqual 510
+    expect(box.view_left   ).toEqual 90
+    expect(box.view_top    ).toEqual 90
+    expect(box.view_right  ).toEqual 510
+    expect(box.view_bottom ).toEqual 510
+
+
   it 'should get new data when list of elements in collection changes', ->
     elm1.parentNode.removeChild elm1
     box.update()

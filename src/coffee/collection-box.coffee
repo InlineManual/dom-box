@@ -17,3 +17,5 @@ class DomBox.CollectionBox extends DomBox.Box
 
     for property, value of getExtremes boxes
       @[property] = value
+
+    super()

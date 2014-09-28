@@ -327,7 +327,7 @@
     }
 
     CollectionBox.prototype.update = function() {
-      var boxes, element, property, value, _i, _len, _ref, _ref1, _results;
+      var boxes, element, property, value, _i, _len, _ref, _ref1;
       boxes = [];
       if (this.selector) {
         _ref = document.querySelectorAll(this.selector);
@@ -340,12 +340,11 @@
         boxes.push(new DomBox.Box);
       }
       _ref1 = getExtremes(boxes);
-      _results = [];
       for (property in _ref1) {
         value = _ref1[property];
-        _results.push(this[property] = value);
+        this[property] = value;
       }
-      return _results;
+      return CollectionBox.__super__.update.call(this);
     };
 
     return CollectionBox;
