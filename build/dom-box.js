@@ -1,5 +1,5 @@
 (function() {
-  var DomBox, body, degToRad, getExtremes, html, isElement, normalizeAngle, radToDeg, root,
+  var DomBox, degToRad, getExtremes, isElement, normalizeAngle, radToDeg, root,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -53,10 +53,6 @@
   isElement = function(obj) {
     return (obj != null) && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
   };
-
-  body = document.body;
-
-  html = document.documentElement;
 
   DomBox = {
     getBox: function(input) {
@@ -358,10 +354,11 @@
 
   DomBox.Document = {
     getWidth: function() {
-      return Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
+      var _ref, _ref1;
+      return Math.max((_ref = document.body) != null ? _ref.scrollWidth : void 0, (_ref1 = document.body) != null ? _ref1.offsetWidth : void 0, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, 0);
     },
     getHeight: function() {
-      return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+      return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, 0);
     },
     getSize: function() {
       return {
@@ -373,10 +370,10 @@
 
   DomBox.Viewport = {
     getWidth: function() {
-      return Math.max(html.clientWidth, window.innerWidth || 0);
+      return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     },
     getHeight: function() {
-      return Math.max(html.clientHeight, window.innerHeight || 0);
+      return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
     },
     getSize: function() {
       return {
@@ -385,10 +382,10 @@
       };
     },
     getLeft: function() {
-      return (window.pageXOffset || html.scrollLeft) - (html.clientLeft || 0);
+      return (window.pageXOffset || document.documentElement.scrollLeft) - (document.documentElement.clientLeft || 0);
     },
     getTop: function() {
-      return (window.pageYOffset || html.scrollTop) - (html.clientTop || 0);
+      return (window.pageYOffset || document.documentElement.scrollTop) - (document.documentElement.clientTop || 0);
     },
     getPosition: function() {
       return {

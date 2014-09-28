@@ -2,13 +2,13 @@ DomBox.Viewport =
 
   getWidth: ->
     Math.max(
-      html.clientWidth
+      document.documentElement.clientWidth
       window.innerWidth or 0
     )
 
   getHeight: ->
     Math.max(
-      html.clientHeight
+      document.documentElement.clientHeight
       window.innerHeight or 0
     )
 
@@ -19,10 +19,12 @@ DomBox.Viewport =
     }
 
   getLeft: ->
-    (window.pageXOffset or html.scrollLeft) - (html.clientLeft or 0)
+    (window.pageXOffset or document.documentElement.scrollLeft) -
+    (document.documentElement.clientLeft or 0)
 
   getTop: ->
-    (window.pageYOffset or html.scrollTop) - (html.clientTop or 0)
+    (window.pageYOffset or document.documentElement.scrollTop) -
+    (document.documentElement.clientTop or 0)
 
   getPosition: ->
     {

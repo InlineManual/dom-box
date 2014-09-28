@@ -7,10 +7,11 @@ module.exports = (config) ->
     frameworks: ['jasmine']
     browsers: [
       'Chrome'
-      'Firefox'
-      'Safari'
-      'Opera'
+      # 'Firefox'
+      # 'Safari'
+      # 'Opera'
       # 'IE8 - WinXP'  # ievms
+      # 'PhantomJS'
     ]
     files: [
       'build/dom-box.js'

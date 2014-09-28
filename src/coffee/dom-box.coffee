@@ -1,7 +1,3 @@
-# quick reference to frequently used objects
-body = document.body
-html = document.documentElement
-
 DomBox =
 
   getBox: (input) ->

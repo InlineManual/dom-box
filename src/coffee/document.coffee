@@ -2,20 +2,22 @@ DomBox.Document =
 
   getWidth: ->
     Math.max(
-      body.scrollWidth
-      body.offsetWidth
-      html.clientWidth
-      html.scrollWidth
-      html.offsetWidth
+      document.body?.scrollWidth
+      document.body?.offsetWidth
+      document.documentElement.clientWidth
+      document.documentElement.scrollWidth
+      document.documentElement.offsetWidth
+      0
     )
 
   getHeight: ->
     Math.max(
-      body.scrollHeight
-      body.offsetHeight
-      html.clientHeight
-      html.scrollHeight
-      html.offsetHeight
+      document.body.scrollHeight
+      document.body.offsetHeight
+      document.documentElement.clientHeight
+      document.documentElement.scrollHeight
+      document.documentElement.offsetHeight
+      0
     )
 
   getSize: ->
