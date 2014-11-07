@@ -1,23 +1,7 @@
 (function() {
-  var DomBox, degToRad, getExtremes, isElement, normalizeAngle, radToDeg, root,
+  var DomBox, getExtremes, isElement, root,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  radToDeg = function(angle) {
-    return angle * (180 / Math.PI);
-  };
-
-  degToRad = function(angle) {
-    return angle * (Math.PI / 180);
-  };
-
-  normalizeAngle = function(angle) {
-    angle = angle % 360;
-    if (angle < 0) {
-      angle += 360;
-    }
-    return angle;
-  };
 
   getExtremes = function(boxes) {
     var all_properties, box, data, key, max_properties, min_properties, property, result, _i, _j, _k, _l, _len, _len1, _len2, _len3;
@@ -54,7 +38,12 @@
     return (obj != null) && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
   };
 
+  if (typeof Angle === "undefined" || Angle === null) {
+    throw new Error('Popover requires AngleJS library to operate.');
+  }
+
   DomBox = {
+    angle: new Angle,
     getBox: function(input) {
       if (typeof input === 'string') {
         return new this.CollectionBox(input);
@@ -112,8 +101,8 @@
       pivot1 = box1.getPivot();
       pivot2 = box2.getPivot();
       angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left);
-      angle_deg = radToDeg(angle_rad);
-      return normalizeAngle(angle_deg);
+      angle_deg = DomBox.angle.fromRad(angle_rad);
+      return DomBox.angle.normalize(angle_deg);
     }
   };
 

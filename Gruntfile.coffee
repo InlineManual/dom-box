@@ -96,8 +96,8 @@ module.exports = (grunt) ->
       options:
         files: ['package.json', 'bower.json']
         updateConfigs: ['pkg']
-        commitFiles: ['package.json', 'bower.json']
-        push: false
+        commitFiles: ['-a']
+        pushTo: 'origin'
 
     concurrent:
       default:
@@ -108,12 +108,19 @@ module.exports = (grunt) ->
         options:
           logConcurrentOutput: true
 
-  grunt.registerTask 'build', [
-    'coffeelint'
-    'coffee'
-    # 'jasmine'
-    'uglify'
-  ]
+
+  # Constructs the code, runs tests and if everyting is OK, creates a minified
+  # version ready for production. This task is intended to be run manually.
+  grunt.registerTask 'build', 'Bumps version and builds JS.', (version_type) ->
+    version_type = 'patch' unless version_type in ['patch', 'minor', 'major']
+    grunt.task.run [
+      "bump-only:#{version_type}"
+      'coffeelint'
+      'coffee'
+      'uglify'
+      'bump-commit'
+    ]
+
 
   grunt.registerTask 'default', [
     'concurrent'

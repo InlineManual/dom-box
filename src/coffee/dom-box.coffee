@@ -1,4 +1,10 @@
+# external dependency check
+throw new Error 'Popover requires AngleJS library to operate.' unless Angle?
+
+
 DomBox =
+
+  angle: new Angle
 
   getBox: (input) ->
     return new @CollectionBox input if typeof input is 'string'
@@ -55,8 +61,8 @@ DomBox =
     pivot2 = box2.getPivot()
 
     angle_rad = Math.atan2(pivot2.top - pivot1.top, pivot2.left - pivot1.left)
-    angle_deg = radToDeg angle_rad
-    normalizeAngle angle_deg
+    angle_deg = DomBox.angle.fromRad angle_rad
+    DomBox.angle.normalize angle_deg
 
 # Expose object to the global namespace.
 root = if typeof exports is 'object' then exports else this

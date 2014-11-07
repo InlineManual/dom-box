@@ -17,5 +17,8 @@
     "src",
     "Gruntfile.coffee",
     "package.json"
-  ]
+  ],
+  "dependencies": {
+    "angle-js": "~1.0.0"
+  }
 }
