@@ -39,7 +39,7 @@
   };
 
   if (typeof Angle === "undefined" || Angle === null) {
-    throw new Error('Popover requires AngleJS library to operate.');
+    throw new Error('DomBox requires AngleJS library to operate.');
   }
 
   DomBox = {
