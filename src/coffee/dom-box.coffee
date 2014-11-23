@@ -1,5 +1,5 @@
 # external dependency check
-throw new Error 'Popover requires AngleJS library to operate.' unless Angle?
+throw new Error 'DomBox requires AngleJS library to operate.' unless Angle?
 
 
 DomBox =
