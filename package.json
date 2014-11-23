@@ -1,11 +1,11 @@
 {
   "title": "DOM Box",
   "name": "dom-box",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Set of utilities for working with dimensions, positions and relations between DOM elements, viewport and the document itself.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:InlineManual/dom-box.git"
+    "url": "https://github.com/InlineManual/dom-box.git"
   },
   "author": "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com/)",
   "license": "UNLICENSE",
