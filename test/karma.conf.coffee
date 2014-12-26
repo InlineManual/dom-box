@@ -14,6 +14,7 @@ module.exports = (config) ->
       # 'PhantomJS'
     ]
     files: [
+      'test/css/style.css'
       'bower_components/angle-js/build/angle.js'
       'build/dom-box.js'
       'test/spec/*.spec.js'

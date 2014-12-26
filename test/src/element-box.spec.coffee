@@ -87,3 +87,12 @@ describe 'Element Box', ->
     expect(box.view_top    ).toEqual 0
     expect(box.view_right  ).toEqual 0
     expect(box.view_bottom ).toEqual 0
+
+  it 'should correctly calculate size of box styled by external stylesheet', ->
+    elm = document.createElement 'div'
+    elm.className = 'aaa'
+    document.body.appendChild elm
+
+    box = new DomBox.ElementBox elm
+    expect(box.width).toEqual 100
+    expect(box.height).toEqual 100
