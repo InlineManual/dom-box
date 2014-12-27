@@ -358,10 +358,10 @@
 
   DomBox.Viewport = {
     getWidth: function() {
-      return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      return window.innerWidth || document.documentElement.clientWidth || 0;
     },
     getHeight: function() {
-      return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      return window.innerHeight || document.documentElement.clientHeight || 0;
     },
     getSize: function() {
       return {

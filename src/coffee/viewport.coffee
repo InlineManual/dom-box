@@ -1,16 +1,14 @@
 DomBox.Viewport =
 
   getWidth: ->
-    Math.max(
-      document.documentElement.clientWidth
-      window.innerWidth or 0
-    )
+    window.innerWidth or
+    document.documentElement.clientWidth or
+    0
 
   getHeight: ->
-    Math.max(
-      document.documentElement.clientHeight
-      window.innerHeight or 0
-    )
+    window.innerHeight or
+    document.documentElement.clientHeight or
+    0
 
   getSize: ->
     {
