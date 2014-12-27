@@ -426,13 +426,19 @@
       return viewport.left <= box.left && viewport.top <= box.top && viewport.right >= box.right && viewport.bottom >= box.bottom;
     },
     partialyContains: function(box) {
-      var viewport, _ref, _ref1, _ref2, _ref3;
+      var intersection_height, intersection_width, max_left, max_top, min_bottom, min_right, viewport;
       box = DomBox.getBox(box);
       if (box == null) {
         return false;
       }
       viewport = this.getBox();
-      return ((viewport.left <= (_ref = box.left) && _ref < viewport.right) || (viewport.left < (_ref1 = box.right) && _ref1 <= viewport.right)) && ((viewport.top <= (_ref2 = box.top) && _ref2 < viewport.bottom) || (viewport.top < (_ref3 = box.bottom) && _ref3 <= viewport.bottom));
+      max_left = Math.max(box.left, viewport.left);
+      max_top = Math.max(box.top, viewport.top);
+      min_right = Math.min(box.right, viewport.right);
+      min_bottom = Math.min(box.bottom, viewport.bottom);
+      intersection_width = min_right - max_left;
+      intersection_height = min_bottom - max_top;
+      return intersection_width > 0 && intersection_height > 0;
     },
     canContain: function(box) {
       box = DomBox.getBox(box);

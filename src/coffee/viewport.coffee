@@ -63,6 +63,8 @@ DomBox.Viewport =
 
     box.moveTo position.left, position.top
 
+
+  # returns `true` if whole box (all its corners) is inside viewport
   contains: (box) ->
     box = DomBox.getBox box
     return false unless box?
@@ -73,19 +75,23 @@ DomBox.Viewport =
     viewport.right >= box.right and
     viewport.bottom >= box.bottom
 
+
+  # returns `true` if at least part of the box is inside viewport
   partialyContains: (box) ->
     box = DomBox.getBox box
     return false unless box?
     viewport = @getBox()
 
-    (
-      viewport.left <= box.left < viewport.right or
-      viewport.left < box.right <= viewport.right
-    ) and
-    (
-      viewport.top <= box.top < viewport.bottom or
-      viewport.top < box.bottom <= viewport.bottom
-    )
+    max_left = Math.max box.left, viewport.left
+    max_top = Math.max box.top, viewport.top
+    min_right = Math.min box.right, viewport.right
+    min_bottom = Math.min box.bottom, viewport.bottom
+
+    intersection_width = min_right - max_left
+    intersection_height = min_bottom - max_top
+
+    intersection_width > 0 and intersection_height > 0
+
 
   canContain: (box) ->
     box = DomBox.getBox box

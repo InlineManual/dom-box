@@ -182,6 +182,21 @@ describe 'Viewport', ->
       box = createBox 5000, 5000, 100, 100
       expect(DomBox.Viewport.partialyContains box).toEqual false
 
+    it 'should return true if box is wider than viewport', ->
+      box = createBox 0, 200, 10000, 50
+      window.scrollTo 100, 100
+      expect(DomBox.Viewport.partialyContains box).toEqual true
+
+    it 'should return true if box is higher than viewport', ->
+      box = createBox 200, 0, 50, 10000
+      window.scrollTo 100, 100
+      expect(DomBox.Viewport.partialyContains box).toEqual true
+
+    it 'should return true if box is bigger than viewport', ->
+      box = createBox 0, 0, 10000, 10000
+      window.scrollTo 100, 100
+      expect(DomBox.Viewport.partialyContains box).toEqual true
+
   describe 'can contain box', ->
 
     it 'should return true if box is smaller than viewport', ->
