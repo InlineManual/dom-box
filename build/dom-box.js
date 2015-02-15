@@ -249,6 +249,38 @@
       }
     };
 
+    Box.prototype.setLeft = function(position) {
+      var diff;
+      diff = position - this.left;
+      this.left = position;
+      this.width += diff;
+      return this.view_left += diff;
+    };
+
+    Box.prototype.setRight = function(position) {
+      var diff;
+      diff = position - this.right;
+      this.right = position;
+      this.width += diff;
+      return this.view_right += diff;
+    };
+
+    Box.prototype.setTop = function(position) {
+      var diff;
+      diff = position - this.top;
+      this.top = position;
+      this.height += diff;
+      return this.view_top += diff;
+    };
+
+    Box.prototype.setBottom = function(position) {
+      var diff;
+      diff = position - this.bottom;
+      this.bottom = position;
+      this.height += diff;
+      return this.view_bottom += diff;
+    };
+
     Box.prototype.toString = function() {
       var property, result, _i, _len, _ref;
       result = {};

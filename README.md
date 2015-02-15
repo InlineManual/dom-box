@@ -79,6 +79,22 @@ Adjust all box's properties as if it was resized to provided size.
 
 Adjust all box's properties as if it was resized by provided size.
 
+#### DomBox.Box.setLeft(position)
+
+Adjusts box's left position and recalculates other properties accordingly
+
+#### DomBox.Box.setRight(position)
+
+Adjusts box's right position and recalculates other properties accordingly
+
+#### DomBox.Box.setTop(position)
+
+Adjusts box's top position and recalculates other properties accordingly
+
+#### DomBox.Box.setBottom(position)
+
+Adjusts box's bottom position and recalculates other properties accordingly
+
 #### DomBox.Box.toString()
 
 Returns string representation of box's properties. This is handy for debuging, since the object itself contains cyclic references and is impossible to flatten using `JSON.stringify()`.

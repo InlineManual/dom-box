@@ -109,3 +109,37 @@ describe 'Box', ->
       spyOn box, 'pad'
       box.update()
       expect(box.pad).toHaveBeenCalledWith 100
+
+  describe 'set position', ->
+
+    it 'left', ->
+      box.setLeft 0
+      expect(box.width       ).toEqual  -200
+      expect(box.left        ).toEqual  0
+      expect(box.right       ).toEqual  500  # no change
+      expect(box.view_left   ).toEqual  400
+      expect(box.view_right  ).toEqual  900  # no change
+
+    it 'right', ->
+      box.setRight 1000
+      expect(box.width       ).toEqual 600
+      expect(box.left        ).toEqual 300  # no change
+      expect(box.right       ).toEqual 1000
+      expect(box.view_left   ).toEqual 700  # no change
+      expect(box.view_right  ).toEqual 1400
+
+    it 'top', ->
+      box.setTop 0
+      expect(box.height      ).toEqual -200
+      expect(box.top         ).toEqual 0
+      expect(box.bottom      ).toEqual 600  # no change
+      expect(box.view_top    ).toEqual 400
+      expect(box.view_bottom ).toEqual 1000  # no change
+
+    it 'bottom', ->
+      box.setBottom 1000
+      expect(box.height      ).toEqual 600
+      expect(box.top         ).toEqual 400  # no change
+      expect(box.bottom      ).toEqual 1000
+      expect(box.view_top    ).toEqual 800  # no change
+      expect(box.view_bottom ).toEqual 1400
