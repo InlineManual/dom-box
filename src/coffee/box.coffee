@@ -94,25 +94,25 @@ class DomBox.Box
   setLeft: (position) ->
     diff = position - @left
     @left = position
-    @width += diff
+    @width = @right - @left
     @view_left += diff
 
   setRight: (position) ->
     diff = position - @right
     @right = position
-    @width += diff
+    @width = @right - @left
     @view_right += diff
 
   setTop: (position) ->
     diff = position - @top
     @top = position
-    @height += diff
+    @height = @bottom - @top
     @view_top += diff
 
   setBottom: (position) ->
     diff = position - @bottom
     @bottom = position
-    @height += diff
+    @height = @bottom - @top
     @view_bottom += diff
 
   # this makes debuging so much easier

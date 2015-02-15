@@ -114,7 +114,7 @@ describe 'Box', ->
 
     it 'left', ->
       box.setLeft 0
-      expect(box.width       ).toEqual  -200
+      expect(box.width       ).toEqual  500
       expect(box.left        ).toEqual  0
       expect(box.right       ).toEqual  500  # no change
       expect(box.view_left   ).toEqual  400
@@ -122,7 +122,7 @@ describe 'Box', ->
 
     it 'right', ->
       box.setRight 1000
-      expect(box.width       ).toEqual 600
+      expect(box.width       ).toEqual 700
       expect(box.left        ).toEqual 300  # no change
       expect(box.right       ).toEqual 1000
       expect(box.view_left   ).toEqual 700  # no change
@@ -130,7 +130,7 @@ describe 'Box', ->
 
     it 'top', ->
       box.setTop 0
-      expect(box.height      ).toEqual -200
+      expect(box.height      ).toEqual 600
       expect(box.top         ).toEqual 0
       expect(box.bottom      ).toEqual 600  # no change
       expect(box.view_top    ).toEqual 400

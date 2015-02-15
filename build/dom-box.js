@@ -253,7 +253,7 @@
       var diff;
       diff = position - this.left;
       this.left = position;
-      this.width += diff;
+      this.width = this.right - this.left;
       return this.view_left += diff;
     };
 
@@ -261,7 +261,7 @@
       var diff;
       diff = position - this.right;
       this.right = position;
-      this.width += diff;
+      this.width = this.right - this.left;
       return this.view_right += diff;
     };
 
@@ -269,7 +269,7 @@
       var diff;
       diff = position - this.top;
       this.top = position;
-      this.height += diff;
+      this.height = this.bottom - this.top;
       return this.view_top += diff;
     };
 
@@ -277,7 +277,7 @@
       var diff;
       diff = position - this.bottom;
       this.bottom = position;
-      this.height += diff;
+      this.height = this.bottom - this.top;
       return this.view_bottom += diff;
     };
 
