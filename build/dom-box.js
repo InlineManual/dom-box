@@ -327,7 +327,7 @@
         left: 0,
         top: 0
       };
-      scroll_element = element.parentNode;
+      scroll_element = element != null ? element.parentNode : void 0;
       while ((scroll_element != null) && scroll_element !== document.body) {
         position.left -= scroll_element.scrollLeft;
         position.top -= scroll_element.scrollTop;

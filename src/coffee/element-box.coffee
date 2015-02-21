@@ -29,7 +29,7 @@ class DomBox.ElementBox extends DomBox.Box
     # Take all parent nodes' scroll position into account (e.g. elements with
     # `overflow: auto`). This can apply to any parent element, even the
     # non-positioned ones.
-    scroll_element = element.parentNode
+    scroll_element = element?.parentNode
     while scroll_element? and scroll_element isnt document.body
       position.left -= scroll_element.scrollLeft
       position.top -= scroll_element.scrollTop
