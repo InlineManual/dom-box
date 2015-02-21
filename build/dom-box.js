@@ -322,7 +322,7 @@
     };
 
     ElementBox.prototype.getDocumentPosition = function(element) {
-      var offset_element, position, scroll_element;
+      var offset_element, position, scroll_element, viewport_position;
       position = {
         left: 0,
         top: 0
@@ -335,11 +335,33 @@
       }
       offset_element = element;
       while (offset_element != null) {
-        position.left += offset_element.offsetLeft;
-        position.top += offset_element.offsetTop;
-        offset_element = offset_element.offsetParent;
+        if (this.getCssProperty(element, 'position') === 'fixed') {
+          viewport_position = DomBox.Viewport.getPosition();
+          position.left += offset_element.offsetLeft + viewport_position.left;
+          position.top += offset_element.offsetTop + viewport_position.top;
+          offset_element = null;
+        } else {
+          position.left += offset_element.offsetLeft;
+          position.top += offset_element.offsetTop;
+          offset_element = offset_element.offsetParent;
+        }
       }
       return position;
+    };
+
+    ElementBox.prototype.getCssProperty = function(elm, property) {
+      var style;
+      if (window.getComputedStyle != null) {
+        style = window.getComputedStyle(elm, null);
+        return style.getPropertyValue(property);
+      }
+      if (elm.currentStyle != null) {
+        property = property.replace(/-(.)/g, function(match, group1) {
+          return group1.toUpperCase();
+        });
+        return elm.currentStyle[property];
+      }
+      return null;
     };
 
     return ElementBox;

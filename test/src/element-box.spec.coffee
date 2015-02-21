@@ -143,3 +143,21 @@ describe 'Element Box', ->
     it 'should get document position', ->
       box = DomBox.getBox elm_anchor
       expect(box.top).toEqual 100
+
+
+  describe 'element with fixed position', ->
+
+    beforeEach ->
+      elm.style.position = 'fixed'
+
+    it 'should get correct position', ->
+      window.scrollTo 0, 0
+      box = DomBox.getBox elm
+      expect(box.top).toEqual 100
+      expect(box.left).toEqual 200
+
+    it 'should get correct position after scroll', ->
+      window.scrollTo 200, 200
+      box = DomBox.getBox elm
+      expect(box.top).toEqual 300
+      expect(box.left).toEqual 400

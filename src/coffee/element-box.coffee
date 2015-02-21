@@ -39,8 +39,38 @@ class DomBox.ElementBox extends DomBox.Box
     # parents.
     offset_element = element
     while offset_element?
-      position.left += offset_element.offsetLeft
-      position.top += offset_element.offsetTop
-      offset_element = offset_element.offsetParent
+
+      # TODO sticky element
+
+      # fixed element
+      if @getCssProperty(element, 'position') is 'fixed'
+        viewport_position = DomBox.Viewport.getPosition()
+        position.left += offset_element.offsetLeft + viewport_position.left
+        position.top += offset_element.offsetTop + viewport_position.top
+        # fixed element's position is not affected by positions of its parents
+        offset_element = null
+
+      # absolute and relative elements
+      else
+        position.left += offset_element.offsetLeft
+        position.top += offset_element.offsetTop
+        offset_element = offset_element.offsetParent
 
     position
+
+  # helper function used to get value of element's CSS property
+  getCssProperty: (elm, property) ->
+
+    # modern browsers
+    if window.getComputedStyle?
+      style = window.getComputedStyle elm, null
+      return style.getPropertyValue property
+
+    # old versions of IE
+    if elm.currentStyle?
+      # convert property name to camelCase
+      property = property.replace /-(.)/g, (match, group1) ->
+        group1.toUpperCase()
+      return elm.currentStyle[property]
+
+    null
