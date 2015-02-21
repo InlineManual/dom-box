@@ -147,17 +147,38 @@ describe 'Element Box', ->
 
   describe 'element with fixed position', ->
 
+    elm2 = null
+
     beforeEach ->
       elm.style.position = 'fixed'
+      # inner element
+      elm2 = elm.appendChild document.createElement 'div'
+      elm2.style.position = 'absolute'
+      elm2.style.left = '100px'
+      elm2.style.top = '100px'
+      elm2.style.width = '100px'
+      elm2.style.height = '100px'
 
-    it 'should get correct position', ->
+    it 'should get position', ->
       window.scrollTo 0, 0
       box = DomBox.getBox elm
       expect(box.top).toEqual 100
       expect(box.left).toEqual 200
 
-    it 'should get correct position after scroll', ->
+    it 'should get position after scroll', ->
       window.scrollTo 200, 200
       box = DomBox.getBox elm
       expect(box.top).toEqual 300
       expect(box.left).toEqual 400
+
+    it 'should get position of positioned element inside fixed one', ->
+      window.scrollTo 0, 0
+      box = DomBox.getBox elm2
+      expect(box.top).toEqual 200
+      expect(box.left).toEqual 300
+
+    it 'should get position of positioned elm inside fixed one after scroll', ->
+      window.scrollTo 200, 200
+      box = DomBox.getBox elm2
+      expect(box.top).toEqual 400
+      expect(box.left).toEqual 500

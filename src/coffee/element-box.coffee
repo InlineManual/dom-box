@@ -43,7 +43,7 @@ class DomBox.ElementBox extends DomBox.Box
       # TODO sticky element
 
       # fixed element
-      if @getCssProperty(element, 'position') is 'fixed'
+      if @getCssProperty(offset_element, 'position') is 'fixed'
         viewport_position = DomBox.Viewport.getPosition()
         position.left += offset_element.offsetLeft + viewport_position.left
         position.top += offset_element.offsetTop + viewport_position.top

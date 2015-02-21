@@ -335,7 +335,7 @@
       }
       offset_element = element;
       while (offset_element != null) {
-        if (this.getCssProperty(element, 'position') === 'fixed') {
+        if (this.getCssProperty(offset_element, 'position') === 'fixed') {
           viewport_position = DomBox.Viewport.getPosition();
           position.left += offset_element.offsetLeft + viewport_position.left;
           position.top += offset_element.offsetTop + viewport_position.top;
