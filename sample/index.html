@@ -43,7 +43,7 @@
         for (i = 0; i < elements.length; i++) {
           var id = elements[i];
           var element = document.getElementById(id);
-          console.log(id, element.offsetTop, element.scrollTop);
+          // console.log(id, element.offsetTop, element.scrollTop);
           console.log(id, DomBox.getBox(element));
         }
       }
@@ -58,10 +58,6 @@
         <div id="test"></div>
       </div>
     </div>
-
-    <p>
-      <a href="javascript:void(debug());">debug</a>
-    </p>
 
     <p>
       <a href="javascript:void(debug());">debug</a>

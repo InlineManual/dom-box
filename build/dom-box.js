@@ -322,19 +322,22 @@
     };
 
     ElementBox.prototype.getDocumentPosition = function(element) {
-      var position;
+      var offset_element, position, scroll_element;
       position = {
         left: 0,
         top: 0
       };
-      while (element != null) {
-        position.left += element.offsetLeft;
-        position.top += element.offsetTop;
-        if (element !== document.body) {
-          position.left -= element.scrollLeft;
-          position.top -= element.scrollTop;
-        }
-        element = element.offsetParent;
+      scroll_element = element.parentNode;
+      while ((scroll_element != null) && scroll_element !== document.body) {
+        position.left -= scroll_element.scrollLeft;
+        position.top -= scroll_element.scrollTop;
+        scroll_element = scroll_element.parentNode;
+      }
+      offset_element = element;
+      while (offset_element != null) {
+        position.left += offset_element.offsetLeft;
+        position.top += offset_element.offsetTop;
+        offset_element = offset_element.offsetParent;
       }
       return position;
     };

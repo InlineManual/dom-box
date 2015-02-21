@@ -25,14 +25,22 @@ class DomBox.ElementBox extends DomBox.Box
     position =
       left: 0
       top: 0
-    while element?
-      position.left += element.offsetLeft
-      position.top += element.offsetTop
 
-      # adjust position for scrollable elements (e.g. `overflow: auto`)
-      unless element is document.body
-        position.left -= element.scrollLeft
-        position.top -= element.scrollTop
+    # Take all parent nodes' scroll position into account (e.g. elements with
+    # `overflow: auto`). This can apply to any parent element, even the
+    # non-positioned ones.
+    scroll_element = element.parentNode
+    while scroll_element? and scroll_element isnt document.body
+      position.left -= scroll_element.scrollLeft
+      position.top -= scroll_element.scrollTop
+      scroll_element = scroll_element.parentNode
 
-      element = element.offsetParent
+    # Take parents' offset into account. This only applies to positioned
+    # parents.
+    offset_element = element
+    while offset_element?
+      position.left += offset_element.offsetLeft
+      position.top += offset_element.offsetTop
+      offset_element = offset_element.offsetParent
+
     position
