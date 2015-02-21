@@ -25,8 +25,14 @@ class DomBox.ElementBox extends DomBox.Box
     position =
       left: 0
       top: 0
-    while element
+    while element?
       position.left += element.offsetLeft
       position.top += element.offsetTop
+
+      # adjust position for scrollable elements (e.g. `overflow: auto`)
+      unless element is document.body
+        position.left -= element.scrollLeft
+        position.top -= element.scrollTop
+
       element = element.offsetParent
     position

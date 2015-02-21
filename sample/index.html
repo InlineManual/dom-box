@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>DomBox sample</title>
+
+    <script src="../bower_components/angle-js/build/angle.js"></script>
+    <script src="../build/dom-box.js"></script>
+
+    <style>
+
+      #outer {
+        position: absolute;
+        left: 100px;
+        top: 100px;
+        width: 200px;
+        height: 200px;
+        background: #c00;
+        overflow: auto;
+      }
+
+      #inner {
+        position: relative;
+        width: 100px;
+        height: 1000px;
+        background: #0c0;
+      }
+
+      #test {
+        position: absolute;
+        left: 0;
+        top: 500px;
+        width: 100px;
+        height: 100px;
+        background: #00c;
+      }
+
+    </style>
+
+    <script>
+
+      function debug() {
+        console.log('debug');
+        elements = ['outer', 'inner', 'test'];
+        for (i = 0; i < elements.length; i++) {
+          var id = elements[i];
+          var element = document.getElementById(id);
+          console.log(id, element.offsetTop, element.scrollTop);
+          console.log(id, DomBox.getBox(element));
+        }
+      }
+
+    </script>
+
+  </head>
+  <body>
+
+    <div id="outer">
+      <div id="inner">
+        <div id="test"></div>
+      </div>
+    </div>
+
+    <p>
+      <a href="javascript:void(debug());">debug</a>
+    </p>
+
+    <p>
+      <a href="javascript:void(debug());">debug</a>
+    </p>
+
+  </body>
+</html>

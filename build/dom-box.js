@@ -327,9 +327,13 @@
         left: 0,
         top: 0
       };
-      while (element) {
+      while (element != null) {
         position.left += element.offsetLeft;
         position.top += element.offsetTop;
+        if (element !== document.body) {
+          position.left -= element.scrollLeft;
+          position.top -= element.scrollTop;
+        }
         element = element.offsetParent;
       }
       return position;

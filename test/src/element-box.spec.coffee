@@ -96,3 +96,50 @@ describe 'Element Box', ->
     box = new DomBox.ElementBox elm
     expect(box.width).toEqual 100
     expect(box.height).toEqual 100
+
+
+  describe 'element inside scrollable element', ->
+
+    elm_wrapper = null
+    elm_content = null
+    elm_anchor = null
+
+    beforeAll ->
+      wrapper_attributes =
+        position: 'absolute'
+        left: '100px'
+        top: '100px'
+        width: '100px'
+        height: '100px'
+        overflow: 'auto'
+      elm_wrapper = document.body.appendChild document.createElement 'div'
+      for key, val of wrapper_attributes
+        elm_wrapper.style[key] = val
+
+      content_attributes =
+        width: '1000px'
+        height: '1000px'
+        position: 'relative'
+      elm_content = elm_wrapper.appendChild document.createElement 'div'
+      for key, val of wrapper_attributes
+        elm_content.style[key] = val
+
+      anchor_attributes =
+        width: '100px'
+        height: '100px'
+        position: 'absolute'
+        top: '500px'
+        left: '500px'
+      elm_anchor = elm_content.appendChild document.createElement 'div'
+      for key, val of wrapper_attributes
+        elm_anchor.style[key] = val
+
+      elm_anchor.scrollIntoView();
+
+    afterAll ->
+      elm_wrapper.parentNode.removeChild elm_wrapper
+
+
+    it 'should get document position', ->
+      box = DomBox.getBox elm_anchor
+      expect(box.top).toEqual 100
