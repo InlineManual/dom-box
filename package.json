@@ -1,7 +1,7 @@
 {
   "title": "DOM Box",
   "name": "dom-box",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Set of utilities for working with dimensions, positions and relations between DOM elements, viewport and the document itself.",
   "repository": {
     "type": "git",
