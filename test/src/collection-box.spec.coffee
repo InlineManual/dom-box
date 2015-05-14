@@ -38,6 +38,20 @@ describe 'Collection Box', ->
     expect(box.view_right  ).toEqual 500
     expect(box.view_bottom ).toEqual 500
 
+  it 'should ignore invisible elements', ->
+    elm2.style.display = 'none'
+    box.update()
+    expect(box.width       ).toEqual 100
+    expect(box.height      ).toEqual 100
+    expect(box.left        ).toEqual 100
+    expect(box.top         ).toEqual 100
+    expect(box.right       ).toEqual 200
+    expect(box.bottom      ).toEqual 200
+    expect(box.view_left   ).toEqual 100
+    expect(box.view_top    ).toEqual 100
+    expect(box.view_right  ).toEqual 200
+    expect(box.view_bottom ).toEqual 200
+
   it 'should apply padding', ->
     box.setPadding 10
     expect(box.width       ).toEqual 420

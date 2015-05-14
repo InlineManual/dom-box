@@ -16,6 +16,7 @@ module.exports = (config) ->
     files: [
       'test/css/style.css'
       'bower_components/angle-js/build/angle.js'
+      'bower_components/isvisible/lib/isvisible.js'
       'build/dom-box.js'
       'test/spec/*.spec.js'
     ]

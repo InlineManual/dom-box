@@ -18,6 +18,7 @@
     "package.json"
   ],
   "dependencies": {
-    "angle-js": "~1.0.0"
+    "angle-js": "~1.0.0",
+    "isvisible": "~1.1.0"
   }
 }

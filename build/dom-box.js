@@ -1,5 +1,5 @@
 (function() {
-  var DomBox, getExtremes, isElement, root,
+  var DomBox, getExtremes, isElement, lib, root, _i, _len, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -38,8 +38,12 @@
     return (obj != null) && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
   };
 
-  if (typeof Angle === "undefined" || Angle === null) {
-    throw new Error('DomBox requires AngleJS library to operate.');
+  _ref = ['isVisible', 'Angle'];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    lib = _ref[_i];
+    if (window[lib] == null) {
+      throw new Error("DomBox requires " + lib + " library to operate.");
+    }
   }
 
   DomBox = {
@@ -114,10 +118,10 @@
     Box.prototype._properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
 
     function Box() {
-      var property, _i, _len, _ref;
-      _ref = this._properties;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        property = _ref[_i];
+      var property, _j, _len1, _ref1;
+      _ref1 = this._properties;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        property = _ref1[_j];
         this[property] = 0;
       }
       this.padding = 0;
@@ -282,11 +286,11 @@
     };
 
     Box.prototype.toString = function() {
-      var property, result, _i, _len, _ref;
+      var property, result, _j, _len1, _ref1;
       result = {};
-      _ref = this._properties;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        property = _ref[_i];
+      _ref1 = this._properties;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        property = _ref1[_j];
         result[property] = this[property];
       }
       return JSON.stringify(result);
@@ -305,11 +309,11 @@
     }
 
     ElementBox.prototype.update = function() {
-      var box_data, document_position, _ref, _ref1;
+      var box_data, document_position, _ref1, _ref2;
       document_position = this.getDocumentPosition(this.element);
       box_data = this.element.getBoundingClientRect();
-      this.width = (_ref = box_data.width) != null ? _ref : this.element.offsetWidth;
-      this.height = (_ref1 = box_data.height) != null ? _ref1 : this.element.offsetHeight;
+      this.width = (_ref1 = box_data.width) != null ? _ref1 : this.element.offsetWidth;
+      this.height = (_ref2 = box_data.height) != null ? _ref2 : this.element.offsetHeight;
       this.left = document_position.left;
       this.top = document_position.top;
       this.right = document_position.left + this.width;
@@ -377,21 +381,23 @@
     }
 
     CollectionBox.prototype.update = function() {
-      var boxes, element, property, value, _i, _len, _ref, _ref1;
+      var boxes, element, property, value, _j, _len1, _ref1, _ref2;
       boxes = [];
       if (this.selector) {
-        _ref = document.querySelectorAll(this.selector);
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          element = _ref[_i];
-          boxes.push(new DomBox.ElementBox(element));
+        _ref1 = document.querySelectorAll(this.selector);
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          element = _ref1[_j];
+          if (isVisible(element)) {
+            boxes.push(new DomBox.ElementBox(element));
+          }
         }
       }
       if (boxes.length === 0) {
         boxes.push(new DomBox.Box);
       }
-      _ref1 = getExtremes(boxes);
-      for (property in _ref1) {
-        value = _ref1[property];
+      _ref2 = getExtremes(boxes);
+      for (property in _ref2) {
+        value = _ref2[property];
         this[property] = value;
       }
       return CollectionBox.__super__.update.call(this);
@@ -403,8 +409,8 @@
 
   DomBox.Document = {
     getWidth: function() {
-      var _ref, _ref1;
-      return Math.max((_ref = document.body) != null ? _ref.scrollWidth : void 0, (_ref1 = document.body) != null ? _ref1.offsetWidth : void 0, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, 0);
+      var _ref1, _ref2;
+      return Math.max((_ref1 = document.body) != null ? _ref1.scrollWidth : void 0, (_ref2 = document.body) != null ? _ref2.offsetWidth : void 0, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, 0);
     },
     getHeight: function() {
       return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, 0);

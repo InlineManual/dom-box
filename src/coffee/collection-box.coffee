@@ -9,7 +9,8 @@ class DomBox.CollectionBox extends DomBox.Box
     # Do not try to get elements if selector is empty. That would throw an error
     if @selector
       for element in document.querySelectorAll @selector
-        boxes.push new DomBox.ElementBox element
+        if isVisible element
+          boxes.push new DomBox.ElementBox element
 
     # If boxes list is empty, insert a default Box to get zero results.
     if boxes.length is 0

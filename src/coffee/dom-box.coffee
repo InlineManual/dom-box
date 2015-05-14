@@ -1,5 +1,7 @@
 # external dependency check
-throw new Error 'DomBox requires AngleJS library to operate.' unless Angle?
+for lib in ['isVisible', 'Angle']
+  unless window[lib]?
+    throw new Error "DomBox requires #{lib} library to operate."
 
 
 DomBox =

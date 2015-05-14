@@ -76,7 +76,11 @@ module.exports = (grunt) ->
 
             """
         files:
-          'build/<%= pkg.name %>.min.js' : 'build/<%= pkg.name %>.js'
+          'build/<%= pkg.name %>.min.js': [
+            'bower_components/isvisible/lib/isvisible.js'
+            'bower_components/angle-js/build/angle.js'
+            'build/<%= pkg.name %>.js'
+          ]
 
     watch:
       default:
