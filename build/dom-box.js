@@ -309,48 +309,28 @@
     }
 
     ElementBox.prototype.update = function() {
-      var box_data, document_position, _ref1, _ref2;
-      document_position = this.getDocumentPosition(this.element);
-      box_data = this.element.getBoundingClientRect();
-      this.width = (_ref1 = box_data.width) != null ? _ref1 : this.element.offsetWidth;
-      this.height = (_ref2 = box_data.height) != null ? _ref2 : this.element.offsetHeight;
-      this.left = document_position.left;
-      this.top = document_position.top;
-      this.right = document_position.left + this.width;
-      this.bottom = document_position.top + this.height;
-      this.view_left = box_data.left;
-      this.view_top = box_data.top;
-      this.view_right = box_data.right;
-      this.view_bottom = box_data.bottom;
-      return ElementBox.__super__.update.call(this);
-    };
-
-    ElementBox.prototype.getDocumentPosition = function(element) {
-      var offset_element, position, scroll_element, viewport_position;
-      position = {
-        left: 0,
-        top: 0
-      };
-      scroll_element = element != null ? element.parentNode : void 0;
-      while ((scroll_element != null) && scroll_element !== document.body) {
-        position.left -= scroll_element.scrollLeft;
-        position.top -= scroll_element.scrollTop;
-        scroll_element = scroll_element.parentNode;
-      }
-      offset_element = element;
-      while (offset_element != null) {
-        if (this.getCssProperty(offset_element, 'position') === 'fixed') {
-          viewport_position = DomBox.Viewport.getPosition();
-          position.left += offset_element.offsetLeft + viewport_position.left;
-          position.top += offset_element.offsetTop + viewport_position.top;
-          offset_element = null;
-        } else {
-          position.left += offset_element.offsetLeft;
-          position.top += offset_element.offsetTop;
-          offset_element = offset_element.offsetParent;
+      var box_data, properties, property, viewport_position, _j, _len1, _ref1, _ref2;
+      if (document.body.contains(this.element)) {
+        box_data = this.element.getBoundingClientRect();
+        viewport_position = DomBox.Viewport.getPosition();
+        this.width = (_ref1 = box_data.width) != null ? _ref1 : this.element.offsetWidth;
+        this.height = (_ref2 = box_data.height) != null ? _ref2 : this.element.offsetHeight;
+        this.view_left = box_data.left;
+        this.view_top = box_data.top;
+        this.view_right = box_data.right;
+        this.view_bottom = box_data.bottom;
+        this.left = box_data.left + viewport_position.left;
+        this.top = box_data.top + viewport_position.top;
+        this.right = this.left + this.width;
+        this.bottom = this.top + this.height;
+      } else {
+        properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
+        for (_j = 0, _len1 = properties.length; _j < _len1; _j++) {
+          property = properties[_j];
+          this[property] = 0;
         }
       }
-      return position;
+      return ElementBox.__super__.update.call(this);
     };
 
     ElementBox.prototype.getCssProperty = function(elm, property) {

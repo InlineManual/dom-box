@@ -79,14 +79,15 @@ describe 'Element Box', ->
 
     expect(box.width       ).toEqual 0
     expect(box.height      ).toEqual 0
-    expect(box.left        ).toEqual 0
-    expect(box.top         ).toEqual 0
-    expect(box.right       ).toEqual 0
-    expect(box.bottom      ).toEqual 0
     expect(box.view_left   ).toEqual 0
     expect(box.view_top    ).toEqual 0
     expect(box.view_right  ).toEqual 0
     expect(box.view_bottom ).toEqual 0
+
+    expect(box.left        ).toEqual 0
+    expect(box.top         ).toEqual 0
+    expect(box.right       ).toEqual 0
+    expect(box.bottom      ).toEqual 0
 
   it 'should correctly calculate size of box styled by external stylesheet', ->
     elm = document.createElement 'div'
@@ -134,7 +135,7 @@ describe 'Element Box', ->
       for key, val of wrapper_attributes
         elm_anchor.style[key] = val
 
-      elm_anchor.scrollIntoView();
+      elm_anchor.scrollIntoView()
 
     afterAll ->
       elm_wrapper.parentNode.removeChild elm_wrapper
@@ -182,3 +183,37 @@ describe 'Element Box', ->
       box = DomBox.getBox elm2
       expect(box.top).toEqual 400
       expect(box.left).toEqual 500
+
+
+  describe 'element with transform', ->
+
+    transform_properties = [
+      'webkitTransform'
+      'MozTransform'
+      'msTransform'
+      'OTransform'
+      'transform'
+    ]
+
+    supports_transform = ( ->
+      elm = document.createElement 'div'
+      for property in transform_properties
+        return true if elm.style[property]?
+      return false
+    )()
+
+
+    beforeEach ->
+      for property in transform_properties
+        elm.style[property] = 'translateX(+20px) translateY(-20px)'
+
+      box = new DomBox.ElementBox elm
+
+
+    it 'should get correct left position', ->
+      expectation = if supports_transform then 220 else 200
+      expect(box.left).toEqual expectation
+
+    it 'should get correct top position', ->
+      expectation = if supports_transform then 80 else 100
+      expect(box.top).toEqual expectation

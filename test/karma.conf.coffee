@@ -5,6 +5,7 @@ module.exports = (config) ->
     basePath: '..'
     # singleRun: true
     frameworks: ['jasmine']
+    reporters: ['mocha']
     browsers: [
       'Chrome'
       # 'Firefox'
