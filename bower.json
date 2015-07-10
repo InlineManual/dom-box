@@ -1,6 +1,6 @@
 {
   "name": "dom-box",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "authors": [
     "Riki Fridrich <riki@fczbkk.com> (http://fczbkk.com/)"
   ],
@@ -18,7 +18,7 @@
     "package.json"
   ],
   "dependencies": {
-    "angle-js": "~1.0.0",
-    "isvisible": "~1.1.0"
+    "angle-js": "^1.0.0",
+    "isvisible": "^1.1.0"
   }
 }
