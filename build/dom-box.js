@@ -1,5 +1,5 @@
 (function() {
-  var DomBox, getExtremes, isElement, lib, root, _i, _len, _ref,
+  var DomBox, dependencies, getExtremes, isElement, label, obj, root, _i, _len,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -38,11 +38,15 @@
     return (obj != null) && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.style === 'object' && typeof obj.ownerDocument === 'object';
   };
 
-  _ref = ['isVisible', 'Angle'];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    lib = _ref[_i];
-    if (window[lib] == null) {
-      throw new Error("DomBox requires " + lib + " library to operate.");
+  dependencies = {
+    'isVisible': isVisible,
+    'Angle': Angle
+  };
+
+  for (obj = _i = 0, _len = dependencies.length; _i < _len; obj = ++_i) {
+    label = dependencies[obj];
+    if (obj == null) {
+      throw new Error("DomBox requires " + label + " library to operate.");
     }
   }
 
@@ -118,10 +122,10 @@
     Box.prototype._properties = ['width', 'height', 'left', 'top', 'right', 'bottom', 'view_left', 'view_top', 'view_right', 'view_bottom'];
 
     function Box() {
-      var property, _j, _len1, _ref1;
-      _ref1 = this._properties;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        property = _ref1[_j];
+      var property, _j, _len1, _ref;
+      _ref = this._properties;
+      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+        property = _ref[_j];
         this[property] = 0;
       }
       this.padding = 0;
@@ -286,11 +290,11 @@
     };
 
     Box.prototype.toString = function() {
-      var property, result, _j, _len1, _ref1;
+      var property, result, _j, _len1, _ref;
       result = {};
-      _ref1 = this._properties;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        property = _ref1[_j];
+      _ref = this._properties;
+      for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+        property = _ref[_j];
         result[property] = this[property];
       }
       return JSON.stringify(result);
@@ -309,12 +313,12 @@
     }
 
     ElementBox.prototype.update = function() {
-      var box_data, properties, property, viewport_position, _j, _len1, _ref1, _ref2;
+      var box_data, properties, property, viewport_position, _j, _len1, _ref, _ref1;
       if (document.body.contains(this.element)) {
         box_data = this.element.getBoundingClientRect();
         viewport_position = DomBox.Viewport.getPosition();
-        this.width = (_ref1 = box_data.width) != null ? _ref1 : this.element.offsetWidth;
-        this.height = (_ref2 = box_data.height) != null ? _ref2 : this.element.offsetHeight;
+        this.width = (_ref = box_data.width) != null ? _ref : this.element.offsetWidth;
+        this.height = (_ref1 = box_data.height) != null ? _ref1 : this.element.offsetHeight;
         this.view_left = box_data.left;
         this.view_top = box_data.top;
         this.view_right = box_data.right;
@@ -361,12 +365,12 @@
     }
 
     CollectionBox.prototype.update = function() {
-      var boxes, element, property, value, _j, _len1, _ref1, _ref2;
+      var boxes, element, property, value, _j, _len1, _ref, _ref1;
       boxes = [];
       if (this.selector) {
-        _ref1 = document.querySelectorAll(this.selector);
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          element = _ref1[_j];
+        _ref = document.querySelectorAll(this.selector);
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          element = _ref[_j];
           if (isVisible(element)) {
             boxes.push(new DomBox.ElementBox(element));
           }
@@ -375,9 +379,9 @@
       if (boxes.length === 0) {
         boxes.push(new DomBox.Box);
       }
-      _ref2 = getExtremes(boxes);
-      for (property in _ref2) {
-        value = _ref2[property];
+      _ref1 = getExtremes(boxes);
+      for (property in _ref1) {
+        value = _ref1[property];
         this[property] = value;
       }
       return CollectionBox.__super__.update.call(this);
@@ -389,8 +393,8 @@
 
   DomBox.Document = {
     getWidth: function() {
-      var _ref1, _ref2;
-      return Math.max((_ref1 = document.body) != null ? _ref1.scrollWidth : void 0, (_ref2 = document.body) != null ? _ref2.offsetWidth : void 0, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, 0);
+      var _ref, _ref1;
+      return Math.max((_ref = document.body) != null ? _ref.scrollWidth : void 0, (_ref1 = document.body) != null ? _ref1.offsetWidth : void 0, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth, 0);
     },
     getHeight: function() {
       return Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight, 0);

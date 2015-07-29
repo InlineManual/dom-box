@@ -1,7 +1,11 @@
 # external dependency check
-for lib in ['isVisible', 'Angle']
-  unless window[lib]?
-    throw new Error "DomBox requires #{lib} library to operate."
+dependencies =
+  'isVisible': isVisible
+  'Angle': Angle
+
+for label, obj in dependencies
+  unless obj?
+    throw new Error "DomBox requires #{label} library to operate."
 
 
 DomBox =
