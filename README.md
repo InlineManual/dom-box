@@ -1,5 +1,7 @@
 # DOM Box
 
+NOTE: There's newer library that does the same as this one and more. Try to use [The DOM Box](https://www.npmjs.com/package/the-dom-box) instead.
+
 Set of utilities for working with dimensions, positions and relations between DOM elements, viewport and the document itself.
 
 It does not actually change properties (position, size, etc.) of any element. It just calculates the elements' bounding box, represents it as an abstract object and lets you do various operations with it.
